@@ -8,8 +8,9 @@ pub fn Card(
     #[prop(into, optional)] id: Option<AttributeValue>,
     #[prop(into, optional)] title: Option<String>,
     #[prop(into, optional)] image_url: Option<AttributeValue>,
-    #[prop(into, optional)] selected: OptionalMaybeSignal<bool>,
     #[prop(into)] on_click: Consumer<MouseEvent>,
+    #[prop(into, optional)] selected: OptionalMaybeSignal<bool>,
+    #[prop(into, optional)] is_light: Option<bool>,
 ) -> impl IntoView {
     let (is_hovered, set_is_hovered) = create_signal(false);
     let is_active = move || selected.get() || is_hovered.get();
