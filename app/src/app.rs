@@ -6,14 +6,16 @@ use serde::{Deserialize, Serialize};
 use serde_wasm_bindgen::to_value;
 use wasm_bindgen::prelude::*;
 
-use app_ui::components::navigation_bar::NavigationBar;
+use app_ui::components::{
+    bookmark_dialog::BookmarkDialog, navigation_bar::NavigationBar, screen::Screen,
+};
+
 #[wasm_bindgen]
 extern "C" {
     // basic tauri invoke function
     #[wasm_bindgen(js_namespace = ["window", "__TAURI__", "core"])]
     async fn invoke(cmd: &str, args: JsValue) -> JsValue;
 
-    
 }
 
 #[derive(Serialize, Deserialize)]
@@ -31,8 +33,6 @@ pub fn App() -> impl IntoView {
         .unwrap();
     let (name, set_name) = create_signal(String::new());
     let (greet_msg, set_greet_msg) = create_signal(String::new());
-    let (camera_device, set_camera_device) = create_signal(String::new());
-
 
     let greet = move || {
         spawn_local(async move {
@@ -52,39 +52,48 @@ pub fn App() -> impl IntoView {
 
     let greet_msg_display = move || greet_msg.get();
 
+    let on_mask_click = move |_| {
+        tracing::info!("Mask clicked");
+    };
+
+    let (is_bookmark_open, set_bookmark_open) = create_signal(false);
+    let bookmark_close = move |_| set_bookmark_open.set(false);
     view! {
-        <Meta name="charset" content="UTF-8"/>
-        <Meta name="description" content="Leptonic Tauri template"/>
-        <Meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <Meta name="theme-color" content="#e66956"/>
+       <Meta name="charset" content="UTF-8"/>
+       <Meta name="description" content="Leptonic Tauri template"/>
+       <Meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+       <Meta name="theme-color" content="#e66956"/>
 
-        <Title text="Leptonic Tauri template"/>
+       <Title text="Leptonic Tauri template"/>
 
-        <Root default_theme=LeptonicTheme::default()>
-            <Box style="display: flex; flex-direction: column; align-items: center; padding: 1em; min-height: 100%; min-width: 100%">
-                <H2>"Welcome to Leptonic"</H2>
-                cargo : { cargo_version } <br/>
-                { browser_version }
-                <Stack spacing=Size::Em(2.0)>
-                    <Stack orientation=StackOrientation::Horizontal spacing=Size::Em(1.2)>
-                        <div>"Count: " {move || count.get()}</div>
-                        <Button on_click=move|_| set_count.update(|c| *c += 1)>
-                            "Increase"
-                        </Button>
-                    </Stack>
-                    <Stack orientation=StackOrientation::Horizontal spacing=Size::Em(1.2)>
-                        <div>
-                            <TextInput get=name set=set_name placeholder="Enter a name..."/>
-                            <span><b>{ greet_msg_display }</b></span>
-                        </div>
-                        <Button on_click=move|_| greet()>
-                            "Greet"
-                        </Button>
-                    </Stack>
-                </Stack>
-               camera_display: {  move || camera_device.get() }
-            </Box>
-            <NavigationBar />
-        </Root>
+       <Root default_theme=LeptonicTheme::default()>
+       <Screen on_mask_click>
+           <H2>"Welcome to Leptonic"</H2>
+           cargo : { cargo_version } <br/>
+           { browser_version }
+           <Stack spacing=Size::Em(2.0)>
+               <Stack orientation=StackOrientation::Horizontal spacing=Size::Em(1.2)>
+                   <div>"Count: " {move || count.get()}</div>
+                   <Button on_click=move|_| set_count.update(|c| *c += 1)>
+                       "Increase"
+                   </Button>
+               </Stack>
+               <Stack orientation=StackOrientation::Horizontal spacing=Size::Em(1.2)>
+                   <div>
+                       <TextInput get=name set=set_name placeholder="Enter a name..."/>
+                       <span><b>{ greet_msg_display }</b></span>
+                   </div>
+                   <Button on_click=move|_| greet()>
+                       "Greet"
+                   </Button>
+               </Stack>
+           </Stack>
+
+            <Button on_click=move|_| set_bookmark_open.set(true)> "Open Bookmark Dialog" </Button>
+       </Screen>
+       <BookmarkDialog is_open=is_bookmark_open on_close=bookmark_close />
+       <NavigationBar />
+
+       </Root>
     }
 }
