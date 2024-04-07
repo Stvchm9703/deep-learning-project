@@ -8,3 +8,7 @@ target/
 
 # macOS
 .DS_Store
+
+
+# testing modules
+barcode-scanner

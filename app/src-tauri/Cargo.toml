@@ -15,7 +15,15 @@ crate-type = ["lib", "cdylib", "staticlib"]
 tauri-build = { version = "2.0.0-beta", features = [] }
 
 [dependencies]
-tauri = { version = "2.0.0-beta", features = [] }
+tauri = { version = "2.0.0-beta", features = ["devtools"] }
+tauri-build = "2.0.0-beta"
+tauri-plugin = {  version = "2.0.0-beta", features = ["build"] }
 tauri-plugin-shell = "2.0.0-beta"
+tauri-plugin-log = "2.0.0-beta"
+tauri-plugin-sql = { version = "2.0.0-beta", features = ["sqlite"] }
 serde = { workspace = true }
 serde_json = { workspace = true }
+anyhow = "1"
+tauri-plugin-fs = "2.0.0-beta"
+tauri-plugin-barcode-scanner = "2.0.0-beta"
+# tauri-plugin-camera = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "feat/camera" }

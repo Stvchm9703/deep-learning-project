@@ -1,6 +1,6 @@
 name: app
 options:
-  bundleIdPrefix: com.tauri
+  bundleIdPrefix: com.stvchm
   deploymentTarget:
     iOS: 13.0
 fileGroups: [../../src]
@@ -11,7 +11,7 @@ settingGroups:
   app:
     base:
       PRODUCT_NAME: app
-      PRODUCT_BUNDLE_IDENTIFIER: com.tauri.app
+      PRODUCT_BUNDLE_IDENTIFIER: com.stvchm.app
       DEVELOPMENT_TEAM: 2DDWYXP7P6
 targetTemplates:
   app:
