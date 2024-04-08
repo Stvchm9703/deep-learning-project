@@ -27,17 +27,6 @@ impl Default for BookmarkItem {
     }
 }
 
-impl BookmarkItem {
-    pub fn new(id: i32, title: String) -> Self {
-        Self {
-            id,
-            selected: false,
-            title,
-            snapshot_image: None,
-        }
-    }
-}
-
 #[component]
 pub fn BookmarkDialog(
     #[prop(into, optional)] is_open: OptionalMaybeSignal<bool>,

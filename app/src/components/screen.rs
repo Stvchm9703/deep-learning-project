@@ -16,8 +16,8 @@ pub fn Screen(
             overflow: hidden;
             "###
         .to_owned();
-        if let style = style.get() {
-            style_str = style_str + &style;
+        let style_content = style.get(); {
+            style_str = style_str + &style_content;
         }
         style_str
     };
