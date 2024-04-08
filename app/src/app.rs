@@ -1,6 +1,6 @@
 use js_sys;
 use leptonic::prelude::*;
-use leptos::{server_fn::client::browser, *};
+use leptos::*;
 use leptos_meta::{Meta, Title};
 use serde::{Deserialize, Serialize};
 use serde_wasm_bindgen::to_value;
@@ -8,6 +8,7 @@ use wasm_bindgen::prelude::*;
 
 use app_ui::components::{
     bookmark_dialog::BookmarkDialog, navigation_bar::NavigationBar, screen::Screen,
+    setting_menu::SettingMenu,
 };
 
 #[wasm_bindgen]
@@ -58,7 +59,11 @@ pub fn App() -> impl IntoView {
 
     let (is_bookmark_open, set_bookmark_open) = create_signal(false);
     let bookmark_close = move |_| set_bookmark_open.set(false);
-    view! {
+
+    let (is_setting_open, set_setting_open) = create_signal(false);
+    let setting_close = move |_| set_setting_open.set(false);
+    let (setting_menu_position, set_setting_menu_position) = create_signal( 0.0);
+    view! { 
        <Meta name="charset" content="UTF-8"/>
        <Meta name="description" content="Leptonic Tauri template"/>
        <Meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -92,7 +97,19 @@ pub fn App() -> impl IntoView {
             <Button on_click=move|_| set_bookmark_open.set(true)> "Open Bookmark Dialog" </Button>
        </Screen>
        <BookmarkDialog is_open=is_bookmark_open on_close=bookmark_close />
-       <NavigationBar />
+       <SettingMenu is_open=is_setting_open on_close=setting_close />
+       <NavigationBar
+            is_bookmark_open
+            on_bookmark_click=move |_| {
+                set_setting_open.set(false);
+                set_bookmark_open.set(!is_bookmark_open.get());
+            }
+            is_setting_open
+            on_setting_click=move |_| {
+                set_bookmark_open.set(false);
+                set_setting_open.set( !is_setting_open.get() );
+            }
+       />
 
        </Root>
     }

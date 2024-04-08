@@ -1,8 +1,6 @@
-use leptonic::prelude::*;
-
-use leptos::{ev::MouseEvent, *};
-
 use super::icon::*;
+use leptonic::prelude::*;
+use leptos::{ev::MouseEvent, logging, *};
 
 #[component]
 fn ButtonGotoMainPage(#[prop(into)] on_click: Consumer<MouseEvent>) -> impl IntoView {
@@ -32,26 +30,50 @@ fn MenuButton(
     #[prop(into, optional)] id: Option<AttributeValue>,
     #[prop(into, optional)] active: OptionalMaybeSignal<bool>,
     #[prop(into)] on_click: Consumer<MouseEvent>,
+    #[prop(into, optional)] _ref: Option<NodeRef<leptos::html::Button>>,
     children: Children,
 ) -> impl IntoView {
-    view! {
-        <Button id active on_click
-            style=r###"
+    // let Some(node_ref) = _ref;
+    let style_set = r###"
                 flex-shrink: 0;
                 width: 40px;
                 height: 40px;
                 position: relative;
                 background: #fff;
                 border-color: transparent;
-            "###
+            "###;
+
+    if let Some(node_ref) = _ref {
+        return view! {
+            <button
+                class="leptonic-btn"
+                _ref=node_ref id=id active=active
+                style=style_set
+                on:click=move|e|on_click.consume(e)
+            >
+                {children()}
+            </button>
+        };
+    }
+    view! {
+        <button
+            class="leptonic-btn"
+            id=id active=active
+            style=style_set
+            on:click=move|e|on_click.consume(e)
         >
             {children()}
-        </Button>
+        </button>
     }
 }
 
 #[component]
-pub fn NavigationBar() -> impl IntoView {
+pub fn NavigationBar(
+    #[prop(into)] on_bookmark_click: Consumer<MouseEvent>,
+    #[prop(into)] on_setting_click: Consumer<MouseEvent>,
+    #[prop(into)] is_bookmark_open: OptionalMaybeSignal<bool>,
+    #[prop(into)] is_setting_open: OptionalMaybeSignal<bool>,
+) -> impl IntoView {
     let goto_main_page_fn = move |_| {
         spawn_local(async move {});
     };
@@ -130,10 +152,10 @@ pub fn NavigationBar() -> impl IntoView {
                         position: relative;
                     "###
                 >
-                    <MenuButton on_click=goto_main_page_fn>
+                    <MenuButton  on_click=on_bookmark_click active=is_bookmark_open>
                         <Icon style="margin-right:0;" width="28" height="28" icon=IconNavBookmarkPage/>
                     </MenuButton>
-                    <MenuButton on_click=goto_main_page_fn>
+                    <MenuButton id="nav-setting" on_click=on_setting_click active=is_setting_open>
                         <Icon style="margin-right:0;" width="28" height="28" icon=IconNavSettingPage/>
                     </MenuButton>
                 </Stack>

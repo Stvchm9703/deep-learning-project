@@ -1,6 +1,5 @@
 use leptonic::prelude::*;
 use leptos::{ev::MouseEvent, *};
-
 use super::icon::*;
 
 #[component]
@@ -8,6 +7,7 @@ pub fn Card(
     #[prop(into, optional)] id: Option<AttributeValue>,
     #[prop(into, optional)] title: Option<String>,
     #[prop(into, optional)] image_url: Option<AttributeValue>,
+    #[prop(into, optional)] style: Option<AttributeValue>,
     #[prop(into)] on_click: Consumer<MouseEvent>,
     #[prop(into, optional)] selected: OptionalMaybeSignal<bool>,
     #[prop(into, optional)] is_light: Option<bool>,
@@ -30,6 +30,7 @@ pub fn Card(
         if is_active() {
             style_str = style_str + "border-color: #588bd8;";
         }
+       
         style_str
     };
 

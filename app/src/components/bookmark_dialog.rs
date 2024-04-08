@@ -104,7 +104,12 @@ pub fn BookmarkDialog(
                     <Icon style="margin-right:0;" width="32" height="32" icon=IconClose/>
                 </Button>
             </Box>
-            <Box style="padding: 4em 0; gap: 1em; display: grid; grid-auto-flow: column; justify-content: start; background: transparent;">
+            <Box style=r###"
+                padding: 4em 0; 
+                gap: 1em; display: grid; grid-auto-flow: column; justify-content: start; 
+                background: transparent;
+            "###
+            >
                 <AnimatedFor
                     each=move || items.get()
                     key=|item| item.id.clone()
