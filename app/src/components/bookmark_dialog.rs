@@ -6,13 +6,36 @@ use serde::{Deserialize, Serialize};
 
 use super::card::Card;
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, Default)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 struct BookmarkItem {
     id: i32,
     selected: bool,
     title: String,
+    snapshot_image: Option<String>,
     // #[serde(skip)]
     // view: View,
+}
+
+impl Default for BookmarkItem {
+    fn default() -> Self {
+        Self {
+            id: -1,
+            selected: false,
+            title: "".to_string(),
+            snapshot_image: None,
+        }
+    }
+}
+
+impl BookmarkItem {
+    pub fn new(id: i32, title: String) -> Self {
+        Self {
+            id,
+            selected: false,
+            title,
+            snapshot_image: None,
+        }
+    }
 }
 
 #[component]
@@ -62,20 +85,21 @@ pub fn BookmarkDialog(
                 id: 1,
                 selected: false,
                 title: "Bookmark 1".to_string(),
+                snapshot_image: Some("https://via.placeholder.com/150".to_string()),
             },
             BookmarkItem {
                 id: 2,
                 selected: false,
                 title: "Bookmark 2".to_string(),
+                snapshot_image: Some("https://via.placeholder.com/150".to_string()),
             },
             BookmarkItem {
                 id: 3,
                 selected: false,
                 title: "Bookmark 3".to_string(),
+                snapshot_image: Some("https://via.placeholder.com/150".to_string()),
             },
         ]);
-
-
     });
 
     view! {
@@ -119,6 +143,7 @@ pub fn BookmarkDialog(
                                 id=item.id.to_string()
                                 title=item.title.clone()
                                 on_click=move |_| set_selected_card(item.id)
+                                image_url=item.snapshot_image.clone()
                             />
                         }
                     }

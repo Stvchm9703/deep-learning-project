@@ -24,3 +24,11 @@ body {
 [data-theme="dark"] {
   --brand-color: #3061aa;
 }
+
+.fill-white {
+  fill: white;
+}
+
+.fill-white path {
+  fill: white;
+}

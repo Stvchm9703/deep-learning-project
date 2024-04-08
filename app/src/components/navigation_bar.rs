@@ -69,8 +69,12 @@ fn MenuButton(
 
 #[component]
 pub fn NavigationBar(
+    #[prop(into)] on_booking_click: Consumer<MouseEvent>,
+    #[prop(into)] on_face_analysis_click: Consumer<MouseEvent>,
     #[prop(into)] on_bookmark_click: Consumer<MouseEvent>,
     #[prop(into)] on_setting_click: Consumer<MouseEvent>,
+    #[prop(into)] is_booking_open: OptionalMaybeSignal<bool>,
+    #[prop(into)] is_face_analysis_open: OptionalMaybeSignal<bool>,
     #[prop(into)] is_bookmark_open: OptionalMaybeSignal<bool>,
     #[prop(into)] is_setting_open: OptionalMaybeSignal<bool>,
 ) -> impl IntoView {
@@ -132,10 +136,16 @@ pub fn NavigationBar(
                         position: relative; 
                     "###
                 >
-                    <MenuButton on_click=goto_main_page_fn>
+                    <MenuButton
+                        on_click=on_booking_click
+                        active=is_booking_open
+                    >
                         <Icon style="margin-right:0;" width="28" height="28" icon=IconNavBookingPage/>
                     </MenuButton>
-                    <MenuButton on_click=goto_main_page_fn>
+                    <MenuButton 
+                        on_click=on_face_analysis_click
+                        active=is_face_analysis_open
+                    >
                         <Icon style="margin-right:0;" width="28" height="28" icon=IconNavFaceAnalysisPage/>
                     </MenuButton>
                 </Stack>

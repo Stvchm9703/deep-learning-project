@@ -10,7 +10,7 @@ leptos = { version = "0.6", features = ["csr"] }
 leptos_animated_for = "0.4"
 leptonic = { version = "0.5", features = ["csr"] }
 leptos_meta = { version = "0.6.9", features = ["csr"] }
-
+leptos-use = "0.10"
 
 wasm-bindgen = "0.2"
 wasm-bindgen-futures = "0.4"
@@ -23,6 +23,11 @@ console_error_panic_hook = "0.1.7"
 
 icondata = "0.3.0"
 icondata_core = "0.1.0"
+
+
+tokio= {version = "*", features=["default" , "time" , "sync"]}
+
+reqwest = { version = "0.12", features = ["json"] }
 
 
 [workspace]
