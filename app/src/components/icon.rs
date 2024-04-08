@@ -1,5 +1,5 @@
 #[allow(non_upper_case_globals)]
-pub static IconMainPage: &icondata_core::IconData = &icondata_core::IconData {
+pub static ICON_MAIN_PAGE: &icondata_core::IconData = &icondata_core::IconData {
     style: None,
     x: None,
     y: None,
@@ -17,7 +17,7 @@ pub static IconMainPage: &icondata_core::IconData = &icondata_core::IconData {
     "###,
 };
 
-pub static IconNavBookingPage: &icondata_core::IconData = &icondata_core::IconData {
+pub static ICON_NAV_BOOKING_PAGE: &icondata_core::IconData = &icondata_core::IconData {
     style: None,
     x: None,
     y: None,
@@ -35,7 +35,7 @@ pub static IconNavBookingPage: &icondata_core::IconData = &icondata_core::IconDa
     "###,
 };
 
-pub static IconNavFaceAnalysisPage: &icondata_core::IconData = &icondata_core::IconData {
+pub static ICON_NAV_FACE_ANALYSIS_PAGE: &icondata_core::IconData = &icondata_core::IconData {
     style: None,
     x: None,
     y: None,
@@ -52,7 +52,7 @@ pub static IconNavFaceAnalysisPage: &icondata_core::IconData = &icondata_core::I
 <path d="M27.61 13C27.8626 13.9802 27.9936 14.9878 28 16C28 18.3734 27.2962 20.6935 25.9776 22.6668C24.6591 24.6402 22.7849 26.1783 20.5922 27.0866C18.3995 27.9948 15.9867 28.2324 13.6589 27.7694C11.3311 27.3064 9.19295 26.1635 7.51472 24.4853C5.83648 22.807 4.6936 20.6689 4.23057 18.3411C3.76755 16.0133 4.00519 13.6005 4.91344 11.4078C5.82169 9.21509 7.35976 7.34094 9.33315 6.02236C11.3065 4.70379 13.6266 4 16 4V2C13.102 1.99901 10.2751 2.89738 7.90928 4.57118C5.54349 6.24498 3.75544 8.61171 2.79182 11.3448C1.82819 14.078 1.73648 17.0428 2.52934 19.8302C3.3222 22.6177 4.96056 25.0904 7.21837 26.9072C9.47618 28.724 12.2422 29.7954 15.1347 29.9735C18.0273 30.1517 20.9038 29.4277 23.3675 27.9017C25.8311 26.3756 27.7605 24.1226 28.8894 21.4535C30.0182 18.7844 30.291 15.8307 29.67 13H27.61Z" fill="#404040" />    "###,
 };
 
-pub static IconNavBookmarkPage: &icondata_core::IconData = &icondata_core::IconData {
+pub static ICON_NAV_BOOKMARK_PAGE: &icondata_core::IconData = &icondata_core::IconData {
     style: None,
     x: None,
     y: None,
@@ -69,7 +69,7 @@ pub static IconNavBookmarkPage: &icondata_core::IconData = &icondata_core::IconD
     "###,
 };
 
-pub static IconNavSettingPage: &icondata_core::IconData = &icondata_core::IconData {
+pub static ICON_NAV_SETTING_PAGE: &icondata_core::IconData = &icondata_core::IconData {
     style: None,
     x: None,
     y: None,
@@ -86,7 +86,7 @@ pub static IconNavSettingPage: &icondata_core::IconData = &icondata_core::IconDa
  "###,
 };
 
-pub static IconClose: &icondata_core::IconData = &icondata_core::IconData {
+pub static ICON_CLOSE: &icondata_core::IconData = &icondata_core::IconData {
     style: None,
     x: None,
     y: None,
@@ -103,7 +103,7 @@ pub static IconClose: &icondata_core::IconData = &icondata_core::IconData {
     "###,
 };
 
-pub static IconBlueCheck: &icondata_core::IconData = &icondata_core::IconData {
+pub static ICON_BLUE_CHECK: &icondata_core::IconData = &icondata_core::IconData {
     style: None,
     x: None,
     y: None,
@@ -123,7 +123,7 @@ pub static IconBlueCheck: &icondata_core::IconData = &icondata_core::IconData {
     "###,
 };
 
-pub static IconAccount: &icondata_core::IconData = &icondata_core::IconData {
+pub static ICON_ACCOUNT: &icondata_core::IconData = &icondata_core::IconData {
     style: None,
     x: None,
     y: None,
@@ -141,7 +141,7 @@ pub static IconAccount: &icondata_core::IconData = &icondata_core::IconData {
     "###,
 };
 
-pub static IconAbout: &icondata_core::IconData = &icondata_core::IconData {
+pub static ICON_ABORT: &icondata_core::IconData = &icondata_core::IconData {
     style: None,
     x: None,
     y: None,
@@ -167,7 +167,7 @@ pub static IconAbout: &icondata_core::IconData = &icondata_core::IconData {
 
 
 
-pub static IconHelp: &icondata_core::IconData = &icondata_core::IconData {
+pub static ICON_HELP: &icondata_core::IconData = &icondata_core::IconData {
     style: None,
     x: None,
     y: None,
@@ -198,7 +198,7 @@ pub static IconHelp: &icondata_core::IconData = &icondata_core::IconData {
 
 
 
-pub static IconSetting: &icondata_core::IconData = &icondata_core::IconData {
+pub static ICON_SETTING: &icondata_core::IconData = &icondata_core::IconData {
     style: None,
     x: None,
     y: None,

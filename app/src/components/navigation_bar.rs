@@ -1,6 +1,6 @@
 use super::icon::*;
 use leptonic::prelude::*;
-use leptos::{ev::MouseEvent, logging, *};
+use leptos::{ev::MouseEvent, *};
 
 #[component]
 fn ButtonGotoMainPage(#[prop(into)] on_click: Consumer<MouseEvent>) -> impl IntoView {
@@ -19,7 +19,7 @@ fn ButtonGotoMainPage(#[prop(into)] on_click: Consumer<MouseEvent>) -> impl Into
             "
             on_click=on_click
         >
-            <Icon width="40" height="40" icon=IconMainPage/>
+            <Icon width="40" height="40" icon=ICON_MAIN_PAGE/>
     </Button>
 
     }
@@ -140,13 +140,13 @@ pub fn NavigationBar(
                         on_click=on_booking_click
                         active=is_booking_open
                     >
-                        <Icon style="margin-right:0;" width="28" height="28" icon=IconNavBookingPage/>
+                        <Icon style="margin-right:0;" width="28" height="28" icon=ICON_NAV_BOOKING_PAGE/>
                     </MenuButton>
                     <MenuButton 
                         on_click=on_face_analysis_click
                         active=is_face_analysis_open
                     >
-                        <Icon style="margin-right:0;" width="28" height="28" icon=IconNavFaceAnalysisPage/>
+                        <Icon style="margin-right:0;" width="28" height="28" icon=ICON_NAV_FACE_ANALYSIS_PAGE/>
                     </MenuButton>
                 </Stack>
                 <Stack
@@ -163,10 +163,10 @@ pub fn NavigationBar(
                     "###
                 >
                     <MenuButton  on_click=on_bookmark_click active=is_bookmark_open>
-                        <Icon style="margin-right:0;" width="28" height="28" icon=IconNavBookmarkPage/>
+                        <Icon style="margin-right:0;" width="28" height="28" icon=ICON_NAV_BOOKMARK_PAGE/>
                     </MenuButton>
                     <MenuButton id="nav-setting" on_click=on_setting_click active=is_setting_open>
-                        <Icon style="margin-right:0;" width="28" height="28" icon=IconNavSettingPage/>
+                        <Icon style="margin-right:0;" width="28" height="28" icon=ICON_NAV_SETTING_PAGE/>
                     </MenuButton>
                 </Stack>
 

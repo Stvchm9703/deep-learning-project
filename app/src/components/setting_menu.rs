@@ -70,19 +70,19 @@ pub fn SettingMenu(
     view! {
         <Box style={move||computed_style()}>
             <SettingMenuItem on_click=on_close>
-                <Icon width="32" height="32" icon=IconAccount/>
+                <Icon width="32" height="32" icon=ICON_ACCOUNT/>
                 <span>Account</span>
             </SettingMenuItem>
              <SettingMenuItem on_click=on_close>
-                <Icon width="32" height="32" icon=IconAbout/>
+                <Icon width="32" height="32" icon=ICON_ABORT/>
                 <span>About</span>
             </SettingMenuItem>
             <SettingMenuItem on_click=on_close>
-                <Icon width="32" height="32" icon=IconHelp/>
+                <Icon width="32" height="32" icon=ICON_HELP/>
                 <span>Help</span>
             </SettingMenuItem>
               <SettingMenuItem on_click=on_close>
-                <Icon width="32" height="32" icon=IconSetting/>
+                <Icon width="32" height="32" icon=ICON_SETTING/>
                 <span>Setting</span>
             </SettingMenuItem>
         </Box>

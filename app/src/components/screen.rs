@@ -1,5 +1,5 @@
 use leptonic::prelude::*;
-use leptos::{ev::MouseEvent, *};
+use leptos::{*};
 
 #[component]
 pub fn Screen(

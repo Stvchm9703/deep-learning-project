@@ -1,9 +1,9 @@
 use super::card::Card;
 use super::icon::*;
 use leptonic::prelude::*;
-use leptos::{ev::MouseEvent, html::Div, logging::log, *};
+use leptos::{ev::MouseEvent, *};
 use leptos_animated_for::AnimatedFor;
-use leptos_use::on_click_outside;
+
 
 #[component]
 pub fn FaceAnalysisContentLoading() -> impl IntoView {
@@ -293,7 +293,7 @@ pub fn FaceAnalysisDrawer(
                 "###
                 on_click=on_close
             >
-                <Icon style="margin-right:0; color:#fff; fill:#fff;" width="32" height="32" icon=IconClose/>
+                <Icon style="margin-right:0; color:#fff; fill:#fff;" width="32" height="32" icon=ICON_CLOSE/>
             </Button>
             // content
             <Box class="content" style="

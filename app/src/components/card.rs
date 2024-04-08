@@ -7,10 +7,10 @@ pub fn Card(
     #[prop(into, optional)] id: Option<AttributeValue>,
     #[prop(into, optional)] title: Option<String>,
     #[prop(into, optional)] image_url: Option<AttributeValue>,
-    #[prop(into, optional)] style: Option<AttributeValue>,
+    #[prop(into, optional)] _style: Option<AttributeValue>,
     #[prop(into)] on_click: Consumer<MouseEvent>,
     #[prop(into, optional)] selected: OptionalMaybeSignal<bool>,
-    #[prop(into, optional)] is_light: Option<bool>,
+    #[prop(into, optional)] _is_light: Option<bool>,
 ) -> impl IntoView {
     let (is_hovered, set_is_hovered) = create_signal(false);
     let is_active = move || selected.get() || is_hovered.get();
@@ -48,7 +48,7 @@ pub fn Card(
         >
             <div style={move||computed_style()}>
                 <Show when= move || selected.get()>
-                    <Icon style="position:absolute  ; right: 0.5em; top: 0.5em; overflow:visible; box-shadow: 0 0 4px #333; border-radius: 50%;" width="32" height="32" icon=IconBlueCheck/>
+                    <Icon style="position:absolute  ; right: 0.5em; top: 0.5em; overflow:visible; box-shadow: 0 0 4px #333; border-radius: 50%;" width="32" height="32" icon=ICON_BLUE_CHECK/>
                 </Show>
 
                 <img style="

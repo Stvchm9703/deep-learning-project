@@ -125,7 +125,7 @@ pub fn BookmarkDialog(
                     "###
                     on_click=on_close
                 >
-                    <Icon style="margin-right:0;" width="32" height="32" icon=IconClose/>
+                    <Icon style="margin-right:0;" width="32" height="32" icon=ICON_CLOSE/>
                 </Button>
             </Box>
             <Box style=r###"
