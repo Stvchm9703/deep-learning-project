@@ -5,21 +5,11 @@ use leptos::{ev::MouseEvent, *};
 #[component]
 fn ButtonGotoMainPage(#[prop(into)] on_click: Consumer<MouseEvent>) -> impl IntoView {
     view! {
-        <Button
-            style="
-                background: #588bd8;
-                border-color: transparent;
-                --button-border-radius: 50%;
-                position: absolute;
-                width: 70px; height: 70px;
-                box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25);
-                left: calc(50% - 35px);
-                bottom: 0px;
-                z-index: 1;
-            "
-            on_click=on_click
-        >
-            <Icon width="40" height="40" icon=ICON_MAIN_PAGE/>
+    <Button
+        class="button-goto-main-page"
+        on_click=on_click
+    >
+        <Icon width="40" height="40" icon=ICON_MAIN_PAGE/>
     </Button>
 
     }
@@ -33,22 +23,12 @@ fn MenuButton(
     #[prop(into, optional)] _ref: Option<NodeRef<leptos::html::Button>>,
     children: Children,
 ) -> impl IntoView {
-    // let Some(node_ref) = _ref;
-    let style_set = r###"
-                flex-shrink: 0;
-                width: 40px;
-                height: 40px;
-                position: relative;
-                background: #fff;
-                border-color: transparent;
-            "###;
-
     if let Some(node_ref) = _ref {
         return view! {
             <button
-                class="leptonic-btn"
+                class="leptonic-btn navigation-bar__menu-button "
                 _ref=node_ref id=id active=active
-                style=style_set
+
                 on:click=move|e|on_click.consume(e)
             >
                 {children()}
@@ -57,9 +37,8 @@ fn MenuButton(
     }
     view! {
         <button
-            class="leptonic-btn"
+             class="leptonic-btn navigation-bar__menu-button "
             id=id active=active
-            style=style_set
             on:click=move|e|on_click.consume(e)
         >
             {children()}
@@ -85,88 +64,49 @@ pub fn NavigationBar(
        <Stack
           spacing=Size::Em(2.0)
           orientation=StackOrientation::Horizontal
-          style=r###"
-                background: #ffffff; 
-                align-items: center; 
-                justify-content: center; 
-                position: relative; 
-                box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25); 
-                position: fixed; 
-                bottom: 0; left: 0; right: 0; 
-                box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25);
-                padding: 4px;
-                z-index: 100;
-              "###>
+          class="navigation-bar"
+        >
         <Box
             id="nav-bar-container"
-            style=r###"
-              background: transparent; 
-              position: relative;
-              width: 100%; height: 48px;
-              min-width: 390px; max-width: 600px;
-              flex-shrink: 0;
-            "###
+            class="navigation-bar__container"
         >
             <ButtonGotoMainPage on_click=goto_main_page_fn />
             <Stack
                 id="nav-bar-sub-btn-group"
                 spacing=Size::Em(0.0)
                 orientation=StackOrientation::Horizontal
-                style=r###"
-                    padding: 0px 16px;
-                    display: flex;
-                    flex-direction: row;
-                    gap: 140px;
-                    align-items: between;
-                    justify-content: center;
-                    position: absolute;
-                    right: 0px; left: 0px; bottom: 0px; top: 0px;
-                "###
+                class="navigation-bar__sub-btn-group"
             >
                 <Stack
                     id="nav-bar-left-side"
                     spacing=Size::Em(0.0)
                     orientation=StackOrientation::Horizontal
-                    style=r###"
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        align-self: stretch;
-                        flex: 1;
-                        position: relative; 
-                    "###
+                   class="navigation-bar__side-btn-group"
                 >
                     <MenuButton
                         on_click=on_booking_click
                         active=is_booking_open
                     >
-                        <Icon style="margin-right:0;" width="28" height="28" icon=ICON_NAV_BOOKING_PAGE/>
+                        <Icon width="28" height="28" icon=ICON_NAV_BOOKING_PAGE/>
                     </MenuButton>
-                    <MenuButton 
+                    <MenuButton
                         on_click=on_face_analysis_click
                         active=is_face_analysis_open
                     >
-                        <Icon style="margin-right:0;" width="28" height="28" icon=ICON_NAV_FACE_ANALYSIS_PAGE/>
+                        <Icon width="28" height="28" icon=ICON_NAV_FACE_ANALYSIS_PAGE/>
                     </MenuButton>
                 </Stack>
                 <Stack
                     id="nav-bar-left-side"
                     spacing=Size::Em(0.0)
                     orientation=StackOrientation::Horizontal
-                    style=r###"
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        align-self: stretch;
-                        flex: 1;
-                        position: relative;
-                    "###
+                    class="navigation-bar__side-btn-group"
                 >
                     <MenuButton  on_click=on_bookmark_click active=is_bookmark_open>
-                        <Icon style="margin-right:0;" width="28" height="28" icon=ICON_NAV_BOOKMARK_PAGE/>
+                        <Icon width="28" height="28" icon=ICON_NAV_BOOKMARK_PAGE/>
                     </MenuButton>
                     <MenuButton id="nav-setting" on_click=on_setting_click active=is_setting_open>
-                        <Icon style="margin-right:0;" width="28" height="28" icon=ICON_NAV_SETTING_PAGE/>
+                        <Icon width="28" height="28" icon=ICON_NAV_SETTING_PAGE/>
                     </MenuButton>
                 </Stack>
 

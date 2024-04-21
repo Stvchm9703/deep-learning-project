@@ -1,0 +1,48 @@
+.card {
+  width: 150px;
+  height: 180px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+
+  &__content {
+    border-radius: 20px;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 2px;
+    width: 150px;
+    height: 150px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.25s;
+
+    &--is-active {
+      border-color: #588bd8;
+    }
+  }
+
+  &__icon {
+    position: absolute;
+    right: 0.5em;
+    top: 0.5em;
+    overflow: visible;
+    box-shadow: 0 0 4px #333;
+    border-radius: 50%;
+  }
+
+  &__image {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  &__title {
+    font-size: 1.25em;
+    padding: 0 0.25em;
+  }
+
+
+
+}

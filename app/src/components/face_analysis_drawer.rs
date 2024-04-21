@@ -8,21 +8,8 @@ use leptos_animated_for::AnimatedFor;
 #[component]
 pub fn FaceAnalysisContentLoading() -> impl IntoView {
     view! {
-    <div style="padding: 16px; display:grid;
-place-content: center center;
-width: 100%; height: 100%;
-position: relative;
-">
-        <div style="
-        padding: 0px 25px 0px 25px;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        align-items: center;
-        justify-content: flex-start;
-        position: relative;
-        overflow: hidden;
-    ">
+    <div class="face-analysis-content_loading" >
+        <div class="face-analysis-content_loading__container">
             <svg
                 class="frame"
                 width="200"
@@ -59,108 +46,22 @@ fn FaceAnalysisContent(
     #[prop(into)] cover_img: MaybeSignal<String>,
 ) -> impl IntoView {
     view! {
-    <div style="display:block;
-width: 100%; 
-position: relative;
-">
-    <div class="header"
-    style="
-  height: 200px;
-  position: fixed;
-  left: 0;
-  top: 0; right: 0;
-  overflow: hidden;
-    
-    ">
-      <img style="
-        position: absolute;
-        right: -20px; left: -20px; bottom: 0px; top: -56px;
-        filter: blur(2px);
-        object-fit: cover;
-      " src=cover_img />
-      <div
-      style="
-        background: linear-gradient( 180deg, rgba(64, 64, 64, 0) 0%, rgba(64, 64, 64, 1) 100% );
-        height: 90px;
-        position: absolute;
-        left: 0; right: 0; bottom: 0;
-      "></div>
-      <h1 style=r###"
-        color: #ffffff;
-        text-align: left;
-        font-family: "GenYoGothicTw-N", sans-serif;
-        font-size: 40px; font-weight: 400;
-        position: absolute;
-        left: 20px; bottom: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        margin:0 8px;
-      "###
-      >{title.get()}</h1>
+    <div class="face-analysis-content">
+    <div class="face-analysis-content__header header">
+      <img class="face-analysis-content__header-cover" src=cover_img />
+      <div class="face-analysis-content__header-cover-mask"></div>
+      <h1 class="face-analysis-content__header-title">{title.get()}</h1>
     </div>
 
-        <div class="content" style=r###"
-            position: relative; margin-top:180px;
-            width:100%;  padding: 16px 0px 20px 0px;
-            background: #ffffff;
-            border-radius: 20px 20px 0px 0px;
-            border-style: solid;
-            border-color: transparent;
-            border-width: 1px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-            align-items: flex-start;
-            justify-content: flex-start;
-            height: auto;
-            min-height: 500px;
-            box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.25);
-            overflow: hidden;
-        "###>
-            <div class="block" style="
-                padding: 0px 18px;
-                display: flex;
-                flex-direction: column;
-            ">
-                <p class="description"
-                style=r###"
-            
-                gap: 10px;
-                align-items: flex-start;
-                justify-content: flex-start;
-                align-self: stretch;
-                flex-shrink: 0;
-                position: relative;
-                margin:0;
-                font-family: "GenYoGothicTw-N", sans-serif;
-                font-size: 16px; line-height: 24px; font-weight: 400;
-                "###
-                >
+        <div class="face-analysis-content__content content">
+            <div class="face-analysis-content__description-block">
+                <p class="face-analysis-content__description-content">
                     {description.get()}
                 </p>
             </div>
-            <div class="block similar-actor" style="
-                padding: 10px 18px 10px 18px;
-                display: flex; flex-shrink: 0;
-                gap: 8px;
-                flex-direction: column; align-items: flex-start; justify-content: flex-start; align-self: stretch;
-                position: relative;
-                overflow: hidden;
-            ">
-                <h2 class="title" style=r###"
-                    color: #000000;
-                    font-family: "GenYoGothicTw-M", sans-serif; font-size: 24px; line-height: 24px; font-weight: 400;
-                    position: relative;
-                    width: 100%; height: 30px;
-                    display: flex; align-items: flex-end; justify-content: flex-start;
-                "###>Similar Actors</h2>
-                <div class="slider" style="  padding: 0 36px 0 10px;
-                        display: flex; flex-direction: row; flex-shrink: 0;
-                        align-items: flex-start; justify-content: flex-start; align-self: stretch;
-                        gap: 10px; position: relative; overflow-x: scroll; scrollbar-width: none;
-                        margin-left: -18px; margin-right: -18px;
-                ">
+            <div class="block face-analysis-content__similar-actor-content">
+                <h2 class="face-analysis-content__similar-actor-content__title">{"Similar Actors"}</h2>
+                <div class="face-analysis-content__similar-actor-content__slider">
                 <AnimatedFor
                     each=move || (0..5)
                     key=|item| item.clone()
@@ -181,35 +82,10 @@ position: relative;
             </div>
 
 
-             <div class="block similar-actor" style="
-                padding: 10px 18px 10px 18px;
-                display: flex; flex-shrink: 0;
-                gap: 8px;
-                flex-direction: column; align-items: flex-start; justify-content: flex-start; align-self: stretch;
-                position: relative;
-                overflow: hidden;
-            ">
-                <h2 class="title" style=r###"
-                    color: #000000;
-                    font-family: "GenYoGothicTw-M", sans-serif; font-size: 24px; line-height: 24px; font-weight: 400;
-                    position: relative;
-                    width: 100%; margin:0;
-                    display: flex; align-items: flex-end; justify-content: flex-start;
-                "###>Recommend Hair Style</h2>
-                <p class="sub-text" style=r###"
-                    color: #000000;
-                    text-align: left;
-                    font-family: "GenYoGothicTw-R", sans-serif; font-size: 14px; font-weight: 400;
-                    position: relative;
-                    height: 24px; margin:0;
-                    display: flex; align-items: center; justify-content: flex-start; align-self: stretch;
-                "###>click to preview now</p>
-                <div class="slider" style="  padding: 0 36px 0 10px;
-                        display: flex; flex-direction: row; flex-shrink: 0;
-                        align-items: flex-start; justify-content: flex-start; align-self: stretch;
-                        gap: 10px; position: relative; overflow-x: scroll; scrollbar-width: none;
-                        margin-left: -18px; margin-right: -18px;
-                ">
+             <div class="block face-analysis-content__similar-actor-content">
+                <h2 class="face-analysis-content__similar-actor-content__title">{"Recommend Hair Style"}</h2>
+                <p class="face-analysis-content__similar-actor-content__sub-text">click to preview now</p>
+                <div class="face-analysis-content__similar-actor-content__slider">
                 <AnimatedFor
                     each=move || (0..5)
                     key=|item| item.clone()

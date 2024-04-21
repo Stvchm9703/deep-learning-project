@@ -1,6 +1,6 @@
+use super::icon::*;
 use leptonic::prelude::*;
 use leptos::{ev::MouseEvent, *};
-use super::icon::*;
 
 #[component]
 pub fn Card(
@@ -14,50 +14,32 @@ pub fn Card(
 ) -> impl IntoView {
     let (is_hovered, set_is_hovered) = create_signal(false);
     let is_active = move || selected.get() || is_hovered.get();
-    let computed_style = move || {
-        let mut style_str = r###"
-            border-radius: 20px;
-            border-style: solid;
-            border-color: transparent;
-            border-width: 2px;
-            width: 150px;
-            height: 150px;
-            position: relative;
-            overflow: hidden;
-            transition: border-color 0.25s;
-            "###
-        .to_owned();
+
+    let computed_class = move || {
         if is_active() {
-            style_str = style_str + "border-color: #588bd8;";
+            return "card__content card__content--is-active";
         }
-       
-        style_str
+        "card__content"
     };
 
     view! {
-        <div style=r###"
-            width: 150px;
-            height: 180px;
-            position: relative;
-            display: flex; flex-direction: column; gap: 0.25em;
-            "###
+        <div
             id=id
+            class="card"
             on:mouseenter=move |_| set_is_hovered.set(true)
             on:mouseleave=move |_| set_is_hovered.set(false)
             on:click=move |e| on_click.consume(e)
         >
-            <div style={move||computed_style()}>
+            <div class={move||computed_class()}>
                 <Show when= move || selected.get()>
-                    <Icon style="position:absolute  ; right: 0.5em; top: 0.5em; overflow:visible; box-shadow: 0 0 4px #333; border-radius: 50%;" width="32" height="32" icon=ICON_BLUE_CHECK/>
+                    <Icon class="card__icon" width="32" height="32" icon=ICON_BLUE_CHECK/>
                 </Show>
 
-                <img style="
-                position: absolute;
-                height: 100%; width: 100%;
-                object-fit: cover;
-                " src=image_url />
+                <img
+                class="card__image"
+                src=image_url />
             </div>
-            <span style="font-size: 1.25em; padding: 0 0.25em;"> {title} </span>
+            <span class="card__title"> {title} </span>
         </div>
     }
 }

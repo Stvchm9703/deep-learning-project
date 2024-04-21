@@ -32,3 +32,8 @@ body {
 .fill-white path {
   fill: white;
 }
+
+@import "./components/bookmark_dialog";
+@import "./components/card";
+@import "./components/face_analysis_drawer";
+@import "./components/navigation_bar";

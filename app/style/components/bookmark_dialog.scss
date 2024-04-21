@@ -1,0 +1,58 @@
+.bookmark-dialog {
+  padding: 1.5em;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 20px 20px 0px 0px;
+  box-shadow: 4px 0px 4px 0px rgba(0, 0, 0, 0.25);
+  overflow-y: auto;
+  z-index: 2;
+  background: #fff;
+  transition: height 150ms ease-in-out;
+  height: 0;
+
+  &--open {
+    height: #{"calc(100% - 5em)"};
+  }
+
+
+  &__content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 0 1.5em;
+    height: 4em;
+    background: #fff;
+    display: flex;
+  }
+
+  &__header {
+    margin: auto 0;
+  }
+
+  &__close-btn,
+  &__close-btn.leptonic-btn {
+    background: transparent !important;
+    border: none !important;
+    color: #000 !important;
+    position: absolute !important;
+    right: 1em !important;
+    top: 1em !important;
+
+    leptonic-icon {
+      margin-right: 0;
+    }
+  }
+
+  &__card-container {
+    padding: 4em 0;
+    gap: 1em;
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: start;
+    background: transparent;
+  }
+
+}
