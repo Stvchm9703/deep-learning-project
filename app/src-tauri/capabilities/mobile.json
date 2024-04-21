@@ -9,10 +9,6 @@
     "android"
   ],
   "permissions": [
-    "barcode-scanner:allow-scan",
-    "barcode-scanner:allow-cancel",
-    "barcode-scanner:allow-request-permissions",
-    "barcode-scanner:allow-vibrate",
     "log:default",
     "fs:allow-app-read-recursive",
     "fs:allow-app-write-recursive",

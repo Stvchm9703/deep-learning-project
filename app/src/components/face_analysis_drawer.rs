@@ -4,7 +4,6 @@ use leptonic::prelude::*;
 use leptos::{ev::MouseEvent, *};
 use leptos_animated_for::AnimatedFor;
 
-
 #[component]
 pub fn FaceAnalysisContentLoading() -> impl IntoView {
     view! {
@@ -78,7 +77,7 @@ fn FaceAnalysisContent(
                 />
 
                 </div>
-                
+
             </div>
 
 
@@ -102,7 +101,7 @@ fn FaceAnalysisContent(
                 />
 
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -155,28 +154,17 @@ pub fn FaceAnalysisDrawer(
         <Drawer
             side=DrawerSide::Left
             shown=is_face_analysis_open
-            style="height:100%; min-width: 424px; background-color: #fff; position:relative; z-index:2;"
+            class="face-analysis-drawer"
         >
 
             <Button
-                class="fill-white"
-                style=r###"
-                background: transparent;
-                border: none;
-                color: #fff;
-                position: absolute;
-                right: -3.25em; top: 0;
-                "###
+                class="fill-white face-analysis-drawer__close-btn"
                 on_click=on_close
             >
-                <Icon style="margin-right:0; color:#fff; fill:#fff;" width="32" height="32" icon=ICON_CLOSE/>
+                <Icon width="32" height="32" icon=ICON_CLOSE/>
             </Button>
             // content
-            <Box class="content" style="
-                position:absolute; top:0; bottom:0; left:0; right:0; 
-                background:#fff; overflow-y:scroll;  
-                scrollbar-width: none;
-                ">
+            <Box class="content face-analysis-drawer__content">
                 <Transition
                     fallback=|| view!{ <FaceAnalysisContentLoading/> }
                 >

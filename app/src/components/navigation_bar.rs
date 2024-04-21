@@ -26,7 +26,7 @@ fn MenuButton(
     if let Some(node_ref) = _ref {
         return view! {
             <button
-                class="leptonic-btn navigation-bar__menu-button "
+                class="leptonic-btn navigation-bar__menu-button"
                 _ref=node_ref id=id active=active
 
                 on:click=move|e|on_click.consume(e)

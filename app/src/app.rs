@@ -81,6 +81,16 @@ pub fn App() -> impl IntoView {
     let (is_setting_open, set_setting_open) = create_signal(false);
     let setting_close = move |_| set_setting_open.set(false);
     // let (setting_menu_position, set_setting_menu_position) = create_signal(0.0);
+
+
+    let scan_qr_code = move || {
+        spawn_local(async move {
+            let result = invoke("scan_qr_code", JsValue::NULL).await;
+            tracing::info!("scan_qr_code result: {:?}", result);
+        });
+    };
+    
+    
     view! {
        <Meta name="charset" content="UTF-8"/>
        <Meta name="description" content="Leptonic Tauri template"/>
@@ -123,6 +133,7 @@ pub fn App() -> impl IntoView {
                 </Stack>
 
                 <Button on_click=move|_| set_bookmark_open.set(true)> "Open Bookmark Dialog" </Button>
+                <Button on_click=move|_| scan_qr_code()> "Open scan" </Button>
             </Box>
        </Screen>
        <BookmarkDialog is_open=is_bookmark_open on_close=bookmark_close />
