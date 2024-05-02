@@ -3,25 +3,49 @@ use leptonic::prelude::*;
 use leptos::*;
 use leptos_meta::{Meta, Title};
 use serde::{Deserialize, Serialize};
-use serde_wasm_bindgen::to_value;
+use serde_wasm_bindgen::{to_value};
 use wasm_bindgen::prelude::*;
 
 use app_ui::components::{
-    bookmark_dialog::BookmarkDialog, navigation_bar::NavigationBar, screen::Screen,
-    setting_menu::SettingMenu, face_analysis_drawer::FaceAnalysisDrawer,
+    bookmark_dialog::BookmarkDialog, face_analysis_drawer::FaceAnalysisDrawer,
+    navigation_bar::NavigationBar, screen::Screen, setting_menu::SettingMenu,
 };
+// import { trace, info, error, attachConsole } from '@tauri-apps/plugin-log';
+
 
 #[wasm_bindgen]
 extern "C" {
     // basic tauri invoke function
     #[wasm_bindgen(js_namespace = ["window", "__TAURI__", "core"])]
-    async fn invoke(cmd: &str, args: JsValue) -> JsValue;
+    async fn invoke(cmd: &str, args: JsValue) -> JsValue;   
 
+    #[wasm_bindgen(js_namespace = ["window", "__TAURI_PLUGIN_LOG__"])]
+    async fn info(args: JsValue) -> JsValue;
+
+    #[wasm_bindgen(js_namespace = ["window", "__TAURI_PLUGIN_LOG__"])]
+    async fn warn(args: JsValue) -> JsValue;
+    
+    #[wasm_bindgen(js_namespace = ["window", "__TAURI_PLUGIN_LOG__"])]
+    async fn error(args: JsValue) -> JsValue;
+
+    #[wasm_bindgen(js_namespace = ["window", "__TAURI_PLUGIN_LOG__"])]
+    async fn attachConsole() -> JsValue;
+    
+    #[wasm_bindgen( js_namespace = ["window", "__TAURI_PLUGIN_BARCODESCANNER__"])]
+    async fn scan(args: JsValue) -> JsValue;
 }
+
 
 #[derive(Serialize, Deserialize)]
 struct GreetArgs<'a> {
     name: &'a str,
+}
+
+#[derive(Serialize, Deserialize)]
+struct ScanOptions <'a> {
+  camera_direction: &'a str ,
+  formats: Vec<&'a str>,
+  windowed: bool,
 }
 
 #[component]
@@ -53,7 +77,6 @@ pub fn App() -> impl IntoView {
 
     let greet_msg_display = move || greet_msg.get();
 
-
     let (is_booking_open, set_booking_open) = create_signal(false);
     let (is_face_analysis_open, set_face_analysis_open) = create_signal(false);
 
@@ -69,11 +92,8 @@ pub fn App() -> impl IntoView {
         // });
     };
 
-    let is_mask_open = MaybeSignal::derive( move || {
-        is_booking_open.get() || is_face_analysis_open.get()
-    });
-
-
+    let is_mask_open =
+        MaybeSignal::derive(move || is_booking_open.get() || is_face_analysis_open.get());
 
     let (is_bookmark_open, set_bookmark_open) = create_signal(false);
     let bookmark_close = move |_| set_bookmark_open.set(false);
@@ -82,26 +102,40 @@ pub fn App() -> impl IntoView {
     let setting_close = move |_| set_setting_open.set(false);
     // let (setting_menu_position, set_setting_menu_position) = create_signal(0.0);
 
-
     let scan_qr_code = move || {
         spawn_local(async move {
-            let result = invoke("scan_qr_code", JsValue::NULL).await;
-            tracing::info!("scan_qr_code result: {:?}", result);
+
+            set_greet_msg.set("requesting".to_owned() );
+            info(to_value("scanning qr code").unwrap()).await;
+            let args = to_value(r#"{
+                cameraDirection: "front",
+                windowed: false
+            }"#).unwrap();
+            set_greet_msg.set(args.as_string().unwrap());
+            let result = scan(args).await;
+            set_greet_msg.set(result.as_string().unwrap());
         });
     };
-    
-    
+
+    let detech = create_rw_signal(JsValue::NULL);
+    create_effect(move |_|{
+        spawn_local(async move {
+            let detech_inst = attachConsole().await;
+            detech.set(detech_inst);
+            info(to_value("hwllow").unwrap()).await;
+            
+        });
+    });
     view! {
        <Meta name="charset" content="UTF-8"/>
        <Meta name="description" content="Leptonic Tauri template"/>
-       <Meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+       <Meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0"/>
        <Meta name="theme-color" content="#e66956"/>
 
        <Title text="Leptonic Tauri template"/>
 
        <Root default_theme=LeptonicTheme::default()>
        <Screen is_mask_open  style="display:flex; flex-direction: row; justify-content: flex-start; align-items: flex-start;">
-
             <FaceAnalysisDrawer is_face_analysis_open on_close=move|_| set_face_analysis_open.set(false)  />
             <Drawer
                 side=DrawerSide::Left
@@ -132,13 +166,14 @@ pub fn App() -> impl IntoView {
                     </Stack>
                 </Stack>
 
-                <Button on_click=move|_| set_bookmark_open.set(true)> "Open Bookmark Dialog" </Button>
+                // <Button  > "Open Bookmark Dialog" </Button>
                 <Button on_click=move|_| scan_qr_code()> "Open scan" </Button>
             </Box>
-       </Screen>
-       <BookmarkDialog is_open=is_bookmark_open on_close=bookmark_close />
-       <SettingMenu is_open=is_setting_open on_close=setting_close />
-       <NavigationBar
+            <div id="logs"></div>
+        </Screen>
+        <BookmarkDialog is_open=is_bookmark_open on_close=bookmark_close />
+        <SettingMenu is_open=is_setting_open on_close=setting_close />
+        <NavigationBar
             is_booking_open
             on_booking_click=on_booking_click
             is_face_analysis_open
@@ -153,8 +188,7 @@ pub fn App() -> impl IntoView {
                 set_bookmark_open.set(false);
                 set_setting_open.set( !is_setting_open.get() );
             }
-       />
-
+        />
        </Root>
     }
 }

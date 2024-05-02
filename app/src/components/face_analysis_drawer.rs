@@ -55,7 +55,7 @@ fn FaceAnalysisContent(
         <div class="face-analysis-content__content content">
             <div class="face-analysis-content__description-block">
                 <p class="face-analysis-content__description-content">
-                    {description.get()}
+                    {move || description.get()}
                 </p>
             </div>
             <div class="block face-analysis-content__similar-actor-content">
@@ -118,7 +118,6 @@ pub fn FaceAnalysisDrawer(
     // on_click_outside(target, move |event| {
     //     log!("{:?}", event);
     // });
-
     // let is_ready = create_rw_signal(false);
     // let cb_data = create_resource(
     //     || (),

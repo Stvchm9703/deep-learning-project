@@ -1,8 +1,9 @@
 use super::icon::*;
-use leptonic::prelude::*;
+use leptonic::{drawer, prelude::*};
 use leptos::{ev::MouseEvent, logging, *};
 use leptos_animated_for::AnimatedFor;
 use serde::{Deserialize, Serialize};
+
 
 use super::card::Card;
 
@@ -78,21 +79,14 @@ pub fn BookmarkDialog(
     });
 
     view! {
-        <Box class=move|| computed_class() >
-            <Box
-            class="bookmark-dialog__content">
-                <H1
-                class="bookmark-dialog__header"
-                > {"Bookmark"} </H1>
-                <Button
-                    class="bookmark-dialog__close-btn"
-                    on_click=on_close
-                >
+        <Box class=move||computed_class()>
+            <Box class="bookmark-dialog__content">
+                <H1 class="bookmark-dialog__header"> {"Bookmark"} </H1>
+                <Button class="bookmark-dialog__close-btn" on_click=on_close>
                     <Icon width="32" height="32" icon=ICON_CLOSE/>
                 </Button>
             </Box>
-            <Box class="bookmark-dialog__card-container"
-            >
+            <Box class="bookmark-dialog__card-container">
                 <AnimatedFor
                     each=move || items.get()
                     key=|item| item.id.clone()

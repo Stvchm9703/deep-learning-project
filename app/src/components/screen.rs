@@ -18,7 +18,7 @@ pub fn Screen(
         style={computed_style()}
         >
         <Show when= move || is_mask_open.get() >
-          <div class="mask screen__content"></div>
+          <div class="mask screen__mask"></div>
         </Show>
         {children()}
       </Box>

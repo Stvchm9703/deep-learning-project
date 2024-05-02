@@ -19,6 +19,12 @@
     "event:allow-emit",
     "event:allow-listen",
     "event:allow-unlisten",
-    "event:allow-emit-to"
+    "event:allow-emit-to",
+    "log:allow-log",
+    "barcode-scanner:allow-cancel",
+    "barcode-scanner:allow-scan",
+    "barcode-scanner:allow-check-permissions",
+    "barcode-scanner:allow-request-permissions",
+    "barcode-scanner:allow-open-app-settings"
   ]
 }
