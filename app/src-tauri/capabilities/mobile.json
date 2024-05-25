@@ -1,13 +1,8 @@
 {
   "$schema": "../gen/schemas/mobile-schema.json",
   "identifier": "mobile-capability",
-  "windows": [
-    "main"
-  ],
-  "platforms": [
-    "iOS",
-    "android"
-  ],
+  "windows": ["main"],
+  "platforms": ["iOS", "android"],
   "permissions": [
     "log:default",
     "fs:allow-app-read-recursive",
@@ -16,6 +11,7 @@
     "fs:allow-appdata-write-recursive",
     "fs:read-all",
     "fs:write-all",
+    "event:default",
     "event:allow-emit",
     "event:allow-listen",
     "event:allow-unlisten",

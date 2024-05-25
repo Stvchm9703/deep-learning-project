@@ -1,9 +1,16 @@
 use super::card::Card;
 use super::icon::*;
+use crate::data::{
+    face_hair_style::{self, FaceHairStyle},
+    face_result_set::*,
+};
 use leptonic::prelude::*;
 use leptos::{ev::MouseEvent, *};
 use leptos_animated_for::AnimatedFor;
+use rand::seq::SliceRandom;
 
+use wasm_bindgen::JsCast;
+use web_sys::HtmlInputElement;
 #[component]
 pub fn FaceAnalysisContentLoading() -> impl IntoView {
     view! {
@@ -40,22 +47,24 @@ pub fn FaceAnalysisContentLoading() -> impl IntoView {
 
 #[component]
 fn FaceAnalysisContent(
-    #[prop(into)] title: MaybeSignal<String>,
-    #[prop(into)] description: MaybeSignal<String>,
-    #[prop(into)] cover_img: MaybeSignal<String>,
+    #[prop(into)] result: Signal<FaceResultSet>,
+    #[prop(into)] hair_styles: Signal<Vec<&'static FaceHairStyle>>,
 ) -> impl IntoView {
+    // let title = move || result.get().title;
+    // let description = move || result.get().description;
+    // let cover_img = move || result.get().cover_img;
     view! {
     <div class="face-analysis-content">
     <div class="face-analysis-content__header header">
-      <img class="face-analysis-content__header-cover" src=cover_img />
+      <img class="face-analysis-content__header-cover" src={move || result.get().cover_img} />
       <div class="face-analysis-content__header-cover-mask"></div>
-      <h1 class="face-analysis-content__header-title">{title.get()}</h1>
+      <h1 class="face-analysis-content__header-title">{move || result.get().title}</h1>
     </div>
 
         <div class="face-analysis-content__content content">
             <div class="face-analysis-content__description-block">
                 <p class="face-analysis-content__description-content">
-                    {move || description.get()}
+                    {move || result.get().description}
                 </p>
             </div>
             <div class="block face-analysis-content__similar-actor-content">
@@ -86,14 +95,14 @@ fn FaceAnalysisContent(
                 <p class="face-analysis-content__similar-actor-content__sub-text">click to preview now</p>
                 <div class="face-analysis-content__similar-actor-content__slider">
                 <AnimatedFor
-                    each=move || (0..5)
-                    key=|item| item.clone()
+                    each=move ||hair_styles.get()
+                    key=|item| item.uid
                     children=move |item| {
                         view! {
                             <Card
-                                id=item.to_string()
-                                title="Actor Name"
-                                image_url="https://picsum.photos/150"
+                                id=item.uid
+                                title=item.style
+                                image_url=item.image_url
                                 on_click=move |_| {}
                             />
                         }
@@ -113,42 +122,79 @@ pub fn FaceAnalysisDrawer(
     #[prop(into)] is_face_analysis_open: Signal<bool>,
     #[prop(into)] on_close: Consumer<MouseEvent>,
 ) -> impl IntoView {
-    // let target = create_node_ref::<Div>();
+    let (face_hair_style, set_face_hair_style) = create_signal(FACE_RESULT_SQUARE);
+    let (hair_styles, set_hair_styles) = create_signal(Vec::<&'static FaceHairStyle>::new());
+    // let (actors, set_actors) = create_signal(Vec::<&'static FaceActor>::new());
+    create_effect(move |_| {
+        if is_face_analysis_open.get() {
+            let result_type = document()
+                .get_element_by_id("render_result")
+                .expect("should be rendered")
+                .dyn_into::<HtmlInputElement>()
+                .expect("should be input element")
+                .value();
 
-    // on_click_outside(target, move |event| {
-    //     log!("{:?}", event);
-    // });
-    // let is_ready = create_rw_signal(false);
-    // let cb_data = create_resource(
-    //     || (),
-    //     |_| async move {
-    //         let result = reqwest::get("https://api.github.com/users/defuncart")
-    //             .await
-    //             .unwrap()
-    //             .json::<serde_json::Value>()
-    //             .await
-    //             .unwrap();
-    //         log!("{:?}", result);
-    //         return result;
-    //     },
-    // );
-    // create_action(|_| async move{
-    //     let cb_data = cb_data.clone();
-    //     let result = cb_data.read().await;
-    //     log!("{:?}", result);
-    // });
-    let sample_result = create_rw_signal(
-        "    The heart-shaped face is characterized by a broader forehead and cheekbones
-    that taper down to a narrow, pointed chin, resembling the silhouette of a
-    heart when observed from the front. This facial shape often features high
-    and defined cheekbones, creating a soft and feminine appearance. The
-    forehead is usually the widest part of the face, gradually narrowing down
-    towards the chin, which may have a slightly pointed or angular shape. People
-    with heart-shaped faces often have delicate features and a youthful look.
-    This face shape is versatile and can complement a variety of hairstyles and
-    makeup looks, as well as different types of eyewear and accessories."
-            .to_string(),
-    );
+            logging::log!("result_type: {:?}", result_type);
+
+            match result_type.as_str() {
+                "square" => {
+                    set_face_hair_style.set(FACE_RESULT_SQUARE);
+                    set_hair_styles.set(
+                        get_hair_styles_square()
+                            .choose_multiple(&mut rand::thread_rng(), 5)
+                            .cloned()
+                            .collect(),
+                    );
+                }
+                "oblong" => {
+                    set_face_hair_style.set(FACE_RESULT_OBLONG);
+                    set_hair_styles.set(
+                        get_hair_styles_oblong()
+                            .choose_multiple(&mut rand::thread_rng(), 5)
+                            .cloned()
+                            .collect(),
+                    );
+                }
+                "round" => {
+                    set_face_hair_style.set(FACE_RESULT_ROUND);
+                    set_hair_styles.set(
+                        get_hair_styles_round()
+                            .choose_multiple(&mut rand::thread_rng(), 5)
+                            .cloned()
+                            .collect(),
+                    );
+                }
+                "heart" => {
+                    set_face_hair_style.set(FACE_RESULT_HEART);
+                    set_hair_styles.set(
+                        get_hair_styles_heart()
+                            .choose_multiple(&mut rand::thread_rng(), 5)
+                            .cloned()
+                            .collect(),
+                    );
+                }
+                "rectangular" => {
+                    set_face_hair_style.set(FACE_RESULT_RECTANGULAR);
+                    set_hair_styles.set(
+                        get_hair_styles_rectangular()
+                            .choose_multiple(&mut rand::thread_rng(), 5)
+                            .cloned()
+                            .collect(),
+                    );
+                }
+                "oval" => {
+                    set_face_hair_style.set(FACE_RESULT_OVAL);
+                    set_hair_styles.set(
+                        get_hair_styles_oval()
+                            .choose_multiple(&mut rand::thread_rng(), 5)
+                            .cloned()
+                            .collect(),
+                    );
+                }
+                _ => (),
+            }
+        }
+    });
     view! {
         <Drawer
             side=DrawerSide::Left
@@ -168,9 +214,8 @@ pub fn FaceAnalysisDrawer(
                     fallback=|| view!{ <FaceAnalysisContentLoading/> }
                 >
                     <FaceAnalysisContent
-                        title="hello world"
-                        cover_img="https://picsum.photos/600/300"
-                        description=sample_result
+                        result=face_hair_style
+                        hair_styles=hair_styles
                     />
                 </Transition>
             </Box>

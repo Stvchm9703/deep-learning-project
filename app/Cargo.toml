@@ -12,10 +12,9 @@ leptonic = { version = "0.5", features = ["csr"] }
 leptos_meta = { version = "0.6.9", features = ["csr"] }
 leptos-use = "0.10"
 
-wasm-bindgen = "0.2"
+wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
 wasm-bindgen-futures = "0.4"
 js-sys = "0.3"
-web-sys = "0"
 serde = { version = "1" }
 serde_json = { version = "1" }
 serde-wasm-bindgen = "0.6"
@@ -24,11 +23,17 @@ console_error_panic_hook = "0.1.7"
 icondata = "0.3.0"
 icondata_core = "0.1.0"
 
-
 tokio = { version = "*", features = ["default", "time", "sync"] }
 
 reqwest = { version = "0.12", features = ["json"] }
-
+web-sys = { version = "0.3", features = [
+    "Document",
+    "Navigator",
+    "MediaDevices",
+    "MediaStreamConstraints",
+    "CanvasRenderingContext2d",
+] }
+rand = "0.8"
 
 [workspace]
 members = ["src-tauri"]

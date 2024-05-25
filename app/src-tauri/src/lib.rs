@@ -26,11 +26,9 @@ pub fn run() {
         .plugin(tauri_plugin_sql::Builder::default().build())
         .setup(move |app| {
             #[cfg(mobile)]
-            {
-                app.handle().plugin(tauri_plugin_barcode_scanner::init())?;
-                // app.handle().plugin(tauri_plugin_nfc::init())?;
-                // app.handle().plugin(tauri_plugin_biometric::init())?;
-            }
+            app.handle().plugin(tauri_plugin_barcode_scanner::init())?;
+            // app.handle().plugin(tauri_plugin_nfc::init())?;
+            // app.handle().plugin(tauri_plugin_biometric::init())?;
 
             // let mut webview_window_builder =
             //     WebviewWindowBuilder::new(app, "main", WebviewUrl::default());
@@ -44,7 +42,8 @@ pub fn run() {
     // #[cfg(debug_assertions)]
     // app = app.plugin(devtools);
 
-    builder.invoke_handler(tauri::generate_handler![greet])
+    builder
+        .invoke_handler(tauri::generate_handler![greet])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

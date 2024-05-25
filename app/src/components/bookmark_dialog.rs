@@ -1,5 +1,5 @@
 use super::icon::*;
-use leptonic::{drawer, prelude::*};
+use leptonic::{prelude::*};
 use leptos::{ev::MouseEvent, logging, *};
 use leptos_animated_for::AnimatedFor;
 use serde::{Deserialize, Serialize};

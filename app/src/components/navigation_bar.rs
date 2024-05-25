@@ -1,9 +1,9 @@
 use super::icon::*;
+
 use leptonic::prelude::*;
 use leptos::{ev::MouseEvent, *};
-
 #[component]
-fn ButtonGotoMainPage(#[prop(into)] on_click: Consumer<MouseEvent>) -> impl IntoView {
+pub fn ButtonGotoMainPage(#[prop(into)] on_click: Consumer<MouseEvent>) -> impl IntoView {
     view! {
     <Button
         class="button-goto-main-page"
@@ -11,12 +11,11 @@ fn ButtonGotoMainPage(#[prop(into)] on_click: Consumer<MouseEvent>) -> impl Into
     >
         <Icon width="40" height="40" icon=ICON_MAIN_PAGE/>
     </Button>
-
     }
 }
 
 #[component]
-fn MenuButton(
+pub fn MenuButton(
     #[prop(into, optional)] id: Option<AttributeValue>,
     #[prop(into, optional)] active: OptionalMaybeSignal<bool>,
     #[prop(into)] on_click: Consumer<MouseEvent>,
@@ -28,8 +27,7 @@ fn MenuButton(
             <button
                 class="leptonic-btn navigation-bar__menu-button"
                 _ref=node_ref id=id active=active
-
-                on:click=move|e|on_click.consume(e)
+                on:click:undelegated=move|e|on_click.consume(e)
             >
                 {children()}
             </button>
@@ -39,7 +37,7 @@ fn MenuButton(
         <button
              class="leptonic-btn navigation-bar__menu-button "
             id=id active=active
-            on:click=move|e|on_click.consume(e)
+            on:click:undelegated=move|e|on_click.consume(e)
         >
             {children()}
         </button>
@@ -48,18 +46,17 @@ fn MenuButton(
 
 #[component]
 pub fn NavigationBar(
-    #[prop(into)] on_booking_click: Consumer<MouseEvent>,
+    #[prop(into)] on_upload_click: Consumer<MouseEvent>,
     #[prop(into)] on_face_analysis_click: Consumer<MouseEvent>,
     #[prop(into)] on_bookmark_click: Consumer<MouseEvent>,
     #[prop(into)] on_setting_click: Consumer<MouseEvent>,
-    #[prop(into)] is_booking_open: OptionalMaybeSignal<bool>,
+    #[prop(into)] on_goto_main_page_click: Consumer<MouseEvent>,
+
     #[prop(into)] is_face_analysis_open: OptionalMaybeSignal<bool>,
     #[prop(into)] is_bookmark_open: OptionalMaybeSignal<bool>,
     #[prop(into)] is_setting_open: OptionalMaybeSignal<bool>,
 ) -> impl IntoView {
-    let goto_main_page_fn = move |_| {
-        spawn_local(async move {});
-    };
+    // let goto_main_page_fn = move |_| {};
     view! {
        <Stack
           spacing=Size::Em(2.0)
@@ -70,7 +67,7 @@ pub fn NavigationBar(
             id="nav-bar-container"
             class="navigation-bar__container"
         >
-            <ButtonGotoMainPage on_click=goto_main_page_fn />
+            <ButtonGotoMainPage on_click=on_goto_main_page_click />
             <Stack
                 id="nav-bar-sub-btn-group"
                 spacing=Size::Em(0.0)
@@ -81,19 +78,19 @@ pub fn NavigationBar(
                     id="nav-bar-left-side"
                     spacing=Size::Em(0.0)
                     orientation=StackOrientation::Horizontal
-                   class="navigation-bar__side-btn-group"
+                    class="navigation-bar__side-btn-group"
                 >
-                    <MenuButton
-                        on_click=on_booking_click
-                        active=is_booking_open
-                    >
-                        <Icon width="28" height="28" icon=ICON_NAV_BOOKING_PAGE/>
-                    </MenuButton>
+
                     <MenuButton
                         on_click=on_face_analysis_click
                         active=is_face_analysis_open
                     >
                         <Icon width="28" height="28" icon=ICON_NAV_FACE_ANALYSIS_PAGE/>
+                    </MenuButton>
+                    <MenuButton
+                        on_click=on_upload_click
+                    >
+                        <Icon width="28" height="28" icon=ICON_NAV_BOOKING_PAGE/>
                     </MenuButton>
                 </Stack>
                 <Stack
