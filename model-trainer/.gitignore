@@ -1,0 +1,7 @@
+raw_set
+dataset/**/*.png
+dataset/**/*.jpg
+
+*.keras
+hf/
+logs/
