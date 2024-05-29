@@ -52,15 +52,13 @@ export const initVideoProcess = async () => {
       const image = await loadImageAndConvertToImageData(
         URL.createObjectURL(file),
       );
-      const imageData = resizeImageData(image, 256, 256);
+      const imageData = resizeImageData(image, 416, 416);
       const tensor = preprocessImage(imageData);
-      const { predictions } = await predict(
+      const { labels } = await predict(
         window["__WEB_CAMERA_MODEL_SESSION__"],
         tensor,
       );
-      console.log(predictions);
-      let { data } = predictions;
-      let cat_index = data.findIndex((v) => v === Math.max(...data));
+      let cat_index = Number(labels.data.at(0));
       console.log(cat_index);
       let output_label = PREDICTION_CATEGORIES[cat_index];
       resultElm.value = output_label.name;
@@ -69,7 +67,7 @@ export const initVideoProcess = async () => {
   }
 };
 export const initModel = async () =>
-  await ort.InferenceSession.create("./public/model_impl_sz256.onnx");
+  await ort.InferenceSession.create("./public/end2end_b1_dyn.onnx");
 
 const predict = async (
   session: ort.InferenceSession,
@@ -104,8 +102,8 @@ function captureImage() {
 }
 
 async function loadImageAndConvertToImageData(filePath: string): Promise<Jimp> {
-  const width = 256,
-    height = 256;
+  const width = 416,
+    height = 416;
 
   var imageData = await Jimp.read(filePath).then((imageBuffer: Jimp) => {
     return imageBuffer.scaleToFit(
@@ -176,7 +174,7 @@ function preprocessImage(imageData) {
   }
 
   // Create tensor
-  const tensor = new ort.Tensor("float32", input, [1, width, height, 3]);
+  const tensor = new ort.Tensor("float32", input, [1, 3, width, height]);
   return tensor;
 }
 
@@ -221,17 +219,17 @@ export async function captureAndPredict() {
   ) as HTMLInputElement;
 
   let image_data = captureImage();
-  image_data = resizeImageData(image_data, 256, 256);
+  image_data = resizeImageData(image_data, 416, 416);
   let input_tensor = preprocessImage(image_data);
+  console.log(window["__WEB_CAMERA_MODEL_SESSION__"]);
 
-  const { predictions } = await predict(
+  let { labels } = await predict(
     window["__WEB_CAMERA_MODEL_SESSION__"],
     input_tensor,
   );
-  console.log(predictions);
-  let { data } = predictions;
-  let cat_index = data.findIndex((v) => v === Math.max(...data));
+  let cat_index = Number(labels.data.at(0));
   console.log(cat_index);
+
   let output_label = PREDICTION_CATEGORIES[cat_index];
   resultElm.value = output_label.name;
   resultElm?.dispatchEvent(new Event("change"));
@@ -248,7 +246,7 @@ export async function testLoadLinkAndPredict() {
   ];
   file_list.forEach(async (file) => {
     let image_data = await loadImageAndConvertToImageData(file);
-    let input_tensor = imageDataToTensor(image_data, [1, 256, 256, 3]);
+    let input_tensor = imageDataToTensor(image_data, [1, 3, 416, 416]);
     // console.log(input_tensor);
     let prediction = await predict(
       window["__WEB_CAMERA_MODEL_SESSION__"],
@@ -258,4 +256,23 @@ export async function testLoadLinkAndPredict() {
     // console.log(typeof prediction);
   });
   return [];
+}
+
+// export async function uploadImageAndPredict() {
+//   const file = document.getElementById("file_input").files[0];
+//   let image_data = await loadImageAndConvertToImageData(file);
+//   let input_tensor = imageDataToTensor(image_data, [1, 3, 416, 416]);
+//   let prediction = await predict(
+//     window["__WEB_CAMERA_MODEL_SESSION__"],
+//     input_tensor,
+//   );
+//   console.log(prediction);
+// }
+export function echo() {
+  console.log("echo");
+  return "echo";
+}
+
+export function onTriggerUpload() {
+  document.getElementById("render_view_input")?.click();
 }

@@ -35,8 +35,12 @@ export const initVideoProcess = async () => {
     .then(function success(stream) {
       video.srcObject = stream;
     });
-  window["__WEB_CAMERA_MODEL_SESSION__"] = await initModel();
-  await testLoadLinkAndPredict();
+
+  if (window["__WEB_CAMERA_MODEL_SESSION__"] == null) {
+    console.warn("model not loaded");
+    await initModel();
+  }
+  // await testLoadLinkAndPredict();
 
   /// listen to the upload input change event
 
@@ -68,9 +72,11 @@ export const initVideoProcess = async () => {
     });
   }
 };
-export const initModel = async () =>
-  await ort.InferenceSession.create("./public/model_impl_sz256.onnx");
-
+export const initModel = async () => {
+  window["__WEB_CAMERA_MODEL_SESSION__"] = await ort.InferenceSession.create(
+    "./public/model_inception_v3_sz256.onnx",
+  );
+};
 const predict = async (
   session: ort.InferenceSession,
   input_tensor: ort.Tensor,
@@ -223,6 +229,7 @@ export async function captureAndPredict() {
   let image_data = captureImage();
   image_data = resizeImageData(image_data, 256, 256);
   let input_tensor = preprocessImage(image_data);
+  console.log(window["__WEB_CAMERA_MODEL_SESSION__"]);
 
   const { predictions } = await predict(
     window["__WEB_CAMERA_MODEL_SESSION__"],
@@ -232,6 +239,7 @@ export async function captureAndPredict() {
   let { data } = predictions;
   let cat_index = data.findIndex((v) => v === Math.max(...data));
   console.log(cat_index);
+
   let output_label = PREDICTION_CATEGORIES[cat_index];
   resultElm.value = output_label.name;
   resultElm?.dispatchEvent(new Event("change"));

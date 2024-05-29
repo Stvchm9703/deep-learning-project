@@ -52,7 +52,7 @@ export const initVideoProcess = async () => {
       const image = await loadImageAndConvertToImageData(
         URL.createObjectURL(file),
       );
-      const imageData = resizeImageData(image, 256, 256);
+      const imageData = resizeImageData(image, 416, 416);
       const tensor = preprocessImage(imageData);
       const { predictions } = await predict(
         window["__WEB_CAMERA_MODEL_SESSION__"],
@@ -69,7 +69,7 @@ export const initVideoProcess = async () => {
   }
 };
 export const initModel = async () =>
-  await ort.InferenceSession.create("./public/model_impl_sz256.onnx");
+  await ort.InferenceSession.create("./public/model_impl_sz416.onnx");
 
 const predict = async (
   session: ort.InferenceSession,
@@ -81,7 +81,7 @@ const predict = async (
   //   inputName: session.inputNames,
   //   outputName: session.outputNames,
   // });
-  // let input = new ort.Tensor("float32", input, [1, 3, 256, 256]);
+  // let input = new ort.Tensor("float32", input, [1, 3, 416, 416]);
   let output = await session.run({ [inputName]: input_tensor }, [
     ...session.outputNames,
   ]);
@@ -104,8 +104,8 @@ function captureImage() {
 }
 
 async function loadImageAndConvertToImageData(filePath: string): Promise<Jimp> {
-  const width = 256,
-    height = 256;
+  const width = 416,
+    height = 416;
 
   var imageData = await Jimp.read(filePath).then((imageBuffer: Jimp) => {
     return imageBuffer.scaleToFit(
@@ -221,8 +221,9 @@ export async function captureAndPredict() {
   ) as HTMLInputElement;
 
   let image_data = captureImage();
-  image_data = resizeImageData(image_data, 256, 256);
+  image_data = resizeImageData(image_data, 416, 416);
   let input_tensor = preprocessImage(image_data);
+  console.log(window["__WEB_CAMERA_MODEL_SESSION__"]);
 
   const { predictions } = await predict(
     window["__WEB_CAMERA_MODEL_SESSION__"],
@@ -232,6 +233,7 @@ export async function captureAndPredict() {
   let { data } = predictions;
   let cat_index = data.findIndex((v) => v === Math.max(...data));
   console.log(cat_index);
+
   let output_label = PREDICTION_CATEGORIES[cat_index];
   resultElm.value = output_label.name;
   resultElm?.dispatchEvent(new Event("change"));
@@ -248,7 +250,7 @@ export async function testLoadLinkAndPredict() {
   ];
   file_list.forEach(async (file) => {
     let image_data = await loadImageAndConvertToImageData(file);
-    let input_tensor = imageDataToTensor(image_data, [1, 256, 256, 3]);
+    let input_tensor = imageDataToTensor(image_data, [1, 416, 416, 3]);
     // console.log(input_tensor);
     let prediction = await predict(
       window["__WEB_CAMERA_MODEL_SESSION__"],
