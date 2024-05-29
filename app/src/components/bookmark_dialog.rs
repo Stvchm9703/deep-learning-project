@@ -1,29 +1,39 @@
 use super::icon::*;
-use leptonic::{prelude::*};
+use leptonic::prelude::*;
 use leptos::{ev::MouseEvent, logging, *};
 use leptos_animated_for::AnimatedFor;
 use serde::{Deserialize, Serialize};
 
+use crate::data::{face_hair_style::*, face_result_set::get_all_hair_style};
 
 use super::card::Card;
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, PartialEq, Serialize, Deserialize)]
 struct BookmarkItem {
     id: i32,
     selected: bool,
     title: String,
     snapshot_image: Option<String>,
-    // #[serde(skip)]
-    // view: View,
 }
 
-impl Default for BookmarkItem {
-    fn default() -> Self {
+// impl Default for BookmarkItem {
+//     fn default() -> Self {
+//         Self {
+//             id: -1,
+//             selected: false,
+//             title: "".to_string(),
+//             snapshot_image: None,
+//         }
+//     }
+// }
+
+impl BookmarkItem {
+    fn from_face_hair_style(face_hair_style: &FaceHairStyle) -> Self {
         Self {
-            id: -1,
+            id: face_hair_style.uid as i32,
             selected: false,
-            title: "".to_string(),
-            snapshot_image: None,
+            title: face_hair_style.style.to_string(),
+            snapshot_image: Some(face_hair_style.image_url.to_string()),
         }
     }
 }
@@ -56,26 +66,13 @@ pub fn BookmarkDialog(
 
     create_effect(move |_| {
         logging::log!("is_open: {:?}", is_open.get());
-        items.set(vec![
-            BookmarkItem {
-                id: 1,
-                selected: false,
-                title: "Bookmark 1".to_string(),
-                snapshot_image: Some("https://via.placeholder.com/150".to_string()),
-            },
-            BookmarkItem {
-                id: 2,
-                selected: false,
-                title: "Bookmark 2".to_string(),
-                snapshot_image: Some("https://via.placeholder.com/150".to_string()),
-            },
-            BookmarkItem {
-                id: 3,
-                selected: false,
-                title: "Bookmark 3".to_string(),
-                snapshot_image: Some("https://via.placeholder.com/150".to_string()),
-            },
-        ]);
+
+        items.set(
+            get_all_hair_style()
+                .iter()
+                .map(|style| BookmarkItem::from_face_hair_style(style.clone()))
+                .collect::<Vec<BookmarkItem>>(),
+        );
     });
 
     view! {

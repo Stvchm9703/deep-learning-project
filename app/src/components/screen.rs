@@ -1,15 +1,16 @@
 use leptonic::prelude::*;
-use leptos::{*};
+use leptos::*;
 
 #[component]
 pub fn Screen(
     #[prop(into, optional)] is_mask_open: OptionalMaybeSignal<bool>,
-    #[prop(into)] style: OptionalMaybeSignal<String>,
+    #[prop(into, optional)] style: OptionalMaybeSignal<String>,
     children: Children,
 ) -> impl IntoView {
     let computed_style = move || {
-        let style_content = style.get(); {
-          return style_content;
+        let style_content = style.get();
+        {
+            return style_content;
         }
     };
     view! {

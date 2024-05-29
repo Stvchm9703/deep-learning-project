@@ -111,11 +111,6 @@ pub const HAIR_STYLE_FACE_FEATHERED_BANGS: &FaceHairStyle = &FaceHairStyle {
     image_url: "https://picsum.photos/150",
 };
 
-// //
-// pub const HAIR_STYLES_FOR_SQUARE: Vec<&'static FaceHairStyle> = vec![
-
-// ];
-
 pub const HAIR_STYLE_PIXIE_CUT_WITH_VOLUME: &FaceHairStyle = &FaceHairStyle {
     uid: 14,
     style: "Pixie Cut with Volume",
@@ -143,14 +138,6 @@ pub const HAIR_STYLE_SHAGGY_LOB: &FaceHairStyle = &FaceHairStyle {
     description: "A medium-length shag with layers adds texture and movement.",
     image_url: "https://picsum.photos/150",
 };
-
-// pub const HAIR_STYLE_SIDE_SWEPT_BANGS: &FaceHairStyle = &FaceHairStyle {
-//     uid: 18,
-//     style: "Side-Swept Bangs",
-//     description:
-//         "Bangs that sweep to the side can create an angular look, balancing the roundness.",
-//     image_url: "https://picsum.photos/150",
-// };
 
 pub const HAIR_STYLE_LAYERED_CUT: &FaceHairStyle = &FaceHairStyle {
     uid: 19,
@@ -209,24 +196,6 @@ pub const HAIR_STYLE_FEATHERED_BANGS: &FaceHairStyle = &FaceHairStyle {
     image_url: "https://picsum.photos/150",
 };
 
-// pub const HAIR_STYLES_FOR_ROUND: Vec<&'static FaceHairStyle> = vec![
-//     HAIR_STYLE_PIXIE_CUT_WITH_VOLUME,
-//     HAIR_STYLE_ASYMMETRICAL_BOB,
-//     HAIR_STYLE_TEXTURED_CROP,
-//     HAIR_STYLE_LONG_BOB,
-//     HAIR_STYLE_SHAGGY_LOB,
-//     HAIR_STYLE_SIDE_SWEPT_BANGS,
-//     HAIR_STYLE_LAYERED_CUT,
-//     HAIR_STYLE_STRAIGHT_AND_SLEEK,
-//     HAIR_STYLE_BEACH_WAVES,
-//     HAIR_STYLE_HIGH_PONYTAIL,
-//     HAIR_STYLE_TOP_KNOT,
-//     HAIR_STYLE_HALF_UP_HALF_DOWN,
-//     HAIR_STYLE_CURTAIN_BANGS,
-//     HAIR_STYLE_SIDE_BANGS,
-//     HAIR_STYLE_FEATHERED_BANGS,
-// ];
-
 pub const HAIR_STYLE_CLASSIC_BOB: &FaceHairStyle = &FaceHairStyle {
     uid: 28,
     style: "Classic Bob",
@@ -253,24 +222,6 @@ pub const HAIR_STYLE_WISPY_BANGS: &FaceHairStyle = &FaceHairStyle {
     image_url: "https://picsum.photos/150",
 };
 
-// pub const HAIR_STYLES_FOR_OVAL: Vec<&'static FaceHairStyle> = vec![
-//     HAIR_STYLE_CLASSIC_BOB,
-//     HAIR_STYLE_PIXIE_CUT,
-//     HAIR_STYLE_ASYMMETRICAL_BOB,
-//     HAIR_STYLE_LONG_BOB,
-//     HAIR_STYLE_LAYERED_SHAG,
-//     HAIR_STYLE_SIDE_SWEPT_BANGS,
-//     HAIR_STYLE_LONG_LAYERS,
-//     HAIR_STYLE_BEACH_WAVES,
-//     HAIR_STYLE_STRAIGHT_AND_SLEEK,
-//     HAIR_STYLE_HIGH_PONYTAIL,
-//     HAIR_STYLE_TOP_KNOT,
-//     HAIR_STYLE_HALF_UP_HALF_DOWN,
-//     HAIR_STYLE_CURTAIN_BANGS,
-//     HAIR_STYLE_BLUNT_BANGS,
-//     HAIR_STYLE_WISPY_BANGS,
-// ];
-//
 pub const HAIR_STYLE_SOFT_CHIGNON: &FaceHairStyle = &FaceHairStyle {
     uid: 32,
     style: "Soft Chignon",
@@ -307,24 +258,6 @@ pub const HAIR_STYLE_VOLUMINOUS_CURLS: &FaceHairStyle = &FaceHairStyle {
     image_url: "https://picsum.photos/150",
 };
 
-// pub const HAIR_STYLES_FOR_RECTANGULAR: Vec<&'static FaceHairStyle> = vec![
-//     HAIR_STYLE_TEXTURED_BOB,
-//     HAIR_STYLE_PIXIE_CUT_WITH_BANGS,
-//     HAIR_STYLE_ASYMMETRICAL_BOB,
-//     HAIR_STYLE_LAYERED_LOB,
-//     HAIR_STYLE_WAVY_SHAG,
-//     HAIR_STYLE_SIDE_SWEPT_BANGS,
-//     HAIR_STYLE_LONG_LAYERS,
-//     HAIR_STYLE_LOOSE_WAVES,
-//     HAIR_STYLE_VOLUMINOUS_CURLS,
-//     HAIR_STYLE_SOFT_CHIGNON,
-//     HAIR_STYLE_HALF_UP_HALF_DOWN,
-//     HAIR_STYLE_LOOSE_PONYTAIL,
-//     HAIR_STYLE_CURTAIN_BANGS,
-//     HAIR_STYLE_BLUNT_BANGS,
-//     HAIR_STYLE_WISPY_BANGS,
-// ];
-
 pub const HAIR_STYLE_LOW_SIDE_SWEPT_PONYTAIL: &FaceHairStyle = &FaceHairStyle {
     uid: 37,
     style: "Low, Side-Swept Ponytail",
@@ -337,24 +270,6 @@ pub const HAIR_STYLE_CHIN_LENGTH_BOB: &FaceHairStyle = &FaceHairStyle {
     description: "A bob that hits at the chin adds width and balances the face’s length.",
     image_url: "https://picsum.photos/150",
 };
-
-// pub const HAIR_STYLES_FOR_OBLONG: Vec<&'static FaceHairStyle> = vec![
-//     HAIR_STYLE_CHIN_LENGTH_BOB,
-//     HAIR_STYLE_TEXTURED_BOB,
-//     HAIR_STYLE_ASYMMETRICAL_BOB,
-//     HAIR_STYLE_LAYERED_LOB,
-//     HAIR_STYLE_SHAGGY_LOB,
-//     HAIR_STYLE_SIDE_SWEPT_BANGS,
-//     HAIR_STYLE_LONG_LAYERS,
-//     HAIR_STYLE_LOOSE_WAVES,
-//     HAIR_STYLE_VOLUMINOUS_CURLS,
-//     HAIR_STYLE_LOOSE_UPDO,
-//     HAIR_STYLE_HALF_UP_HALF_DOWN,
-//     HAIR_STYLE_LOOSE_PONYTAIL,
-//     HAIR_STYLE_CURTAIN_BANGS,
-//     HAIR_STYLE_BLUNT_BANGS,
-//     HAIR_STYLE_WISPY_BANGS,
-// ];
 
 pub const HAIR_STYLE_TEXTURED_PIXIE_CUT: &FaceHairStyle = &FaceHairStyle {
     uid: 39,
@@ -376,21 +291,3 @@ pub const HAIR_STYLE_LOW_BUN: &FaceHairStyle = &FaceHairStyle {
     description: "A low, loose bun adds volume at the nape of the neck, balancing the face shape.",
     image_url: "https://picsum.photos/150",
 };
-
-// pub const HAIR_STYLES_FOR_HEART: Vec<&'static FaceHairStyle> = vec![
-//     HAIR_STYLE_TEXTURED_PIXIE_CUT,
-//     HAIR_STYLE_SIDE_SWEPT_PIXIE,
-//     HAIR_STYLE_CHIN_LENGTH_BOB,
-//     HAIR_STYLE_LAYERED_LOB,
-//     HAIR_STYLE_SIDE_SWEPT_BANGS,
-//     HAIR_STYLE_WAVY_SHAG,
-//     HAIR_STYLE_LONG_LAYERS,
-//     HAIR_STYLE_LOOSE_WAVES,
-//     HAIR_STYLE_SIDE_PART,
-//     HAIR_STYLE_LOW_BUN,
-//     HAIR_STYLE_HALF_UP_HALF_DOWN,
-//     HAIR_STYLE_LOOSE_PONYTAIL,
-//     HAIR_STYLE_CURTAIN_BANGS,
-//     HAIR_STYLE_SIDE_BANGS,
-//     HAIR_STYLE_WISPY_BANGS,
-// ];

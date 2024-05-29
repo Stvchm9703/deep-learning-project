@@ -1,9 +1,6 @@
 use super::card::Card;
 use super::icon::*;
-use crate::data::{
-    face_hair_style::{self, FaceHairStyle},
-    face_result_set::*,
-};
+use crate::data::{face_hair_style::FaceHairStyle, face_result_set::*};
 use leptonic::prelude::*;
 use leptos::{ev::MouseEvent, *};
 use leptos_animated_for::AnimatedFor;

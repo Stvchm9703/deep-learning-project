@@ -18,9 +18,10 @@ pub fn CameraCanvas(
     let result_ref = create_node_ref::<Input>();
 
     create_effect(|_| {
-        spawn_local(async move {
-            let _ = init_video_process().await;
-        });
+        init_video_process()
+        // spawn_local(async move {
+        //     let _ = .await;
+        // });
     });
 
     let d_on_result_updated = move |e| {

@@ -26,7 +26,10 @@ pub mod tauri_bind {
 }
 
 pub mod js_bind {
+    use leptos::logging;
+    use query_map::QueryMap;
     use wasm_bindgen::prelude::*;
+    use web_sys::*;
 
     #[wasm_bindgen(module = "/public/index.bundle.mjs")]
     extern "C" {
@@ -36,10 +39,23 @@ pub mod js_bind {
         #[wasm_bindgen(js_name = "echo")]
         pub fn echo(s: &str);
 
-        #[wasm_bindgen(js_name = "initVideoProcess", catch)]
-        pub async fn init_video_process() -> Result<(), JsValue>;
+        #[wasm_bindgen(js_name = "initVideoProcess")]
+        pub fn init_video_process();
 
         #[wasm_bindgen(js_name = "onTriggerUpload")]
         pub fn on_trigger_upload();
+
+        #[wasm_bindgen(js_name = "initModel", catch)]
+        pub async fn init_model() -> Result<(), JsValue>;
+
+    }
+
+    pub fn get_url_query_map() -> QueryMap {
+        let window = window().unwrap();
+        let location = window.location();
+        let mut url = location.href().unwrap();
+        url = url.split('?').skip(1).collect::<String>();
+        let mapping = url.parse::<QueryMap>().unwrap();
+        mapping
     }
 }

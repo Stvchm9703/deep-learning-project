@@ -1,85 +1,42 @@
-use app_ui::js_bind::on_trigger_upload;
-use js_sys;
 use leptonic::prelude::*;
 use leptos::*;
 use leptos_meta::{Meta, Title};
-use serde::{Deserialize, Serialize};
-use serde_wasm_bindgen::to_value;
+
+use leptos_use::use_window;
+// use leptos_router::{create_query_signal, use_query_map};
 use wasm_bindgen::prelude::*;
 
 use app_ui::components::{
-    bookmark_dialog::BookmarkDialog, face_analysis_drawer::FaceAnalysisDrawer,
-    navigation_bar::NavigationBar, screen::Screen, setting_menu::SettingMenu,
-    web_cam_render::CameraCanvas,
+    bookmark_dialog::BookmarkDialog, cover_view::MainCoverView,
+    face_analysis_drawer::FaceAnalysisDrawer, navigation_bar::NavigationBar, screen::Screen,
+    setting_menu::SettingMenu, web_cam_render::CameraCanvas,
 };
 
-use app_ui::{
-    js_bind::{capture_and_predict, echo},
-    tauri_bind::{attachConsole, info, invoke, scan},
-};
+use app_ui::js_bind::{capture_and_predict, get_url_query_map, init_model};
+
 use web_sys::*;
-// import { trace, info, error, attachConsole } from '@tauri-apps/plugin-log';
 
-// #[wasm_bindgen(module = "/public/index.bundle.js")]
-
-#[derive(Serialize, Deserialize)]
-struct GreetArgs<'a> {
-    name: &'a str,
-}
-
-#[derive(Serialize, Deserialize)]
-struct ScanOptions<'a> {
-    camera_direction: &'a str,
-    formats: Vec<&'a str>,
-    windowed: bool,
+// #[wasm_bindgen]
+fn on_trigger_upload() {
+    let input_elem = document().get_element_by_id("render_view_input").unwrap();
+    input_elem.dyn_into::<HtmlInputElement>().unwrap().click();
 }
 
 #[component]
 pub fn App() -> impl IntoView {
     tracing::info!("Welcome to Leptonic");
-    let _cargo_version = env!("CARGO_PKG_VERSION");
-    let _browser_version = js_sys::eval("window.navigator.userAgent")
-        .unwrap()
-        .as_string()
-        .unwrap();
-    let (name, _set_name) = create_signal(String::new());
-    let (greet_msg, set_greet_msg) = create_signal(String::new());
-
-    let _greet = move || {
-        spawn_local(async move {
-            let name = name.get_untracked();
-            if name.is_empty() {
-                return;
-            }
-
-            let args = to_value(&GreetArgs { name: &name }).unwrap();
-            // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-            let new_msg = invoke("greet", args.clone()).await.as_string().unwrap();
-            set_greet_msg.set(new_msg);
-        });
-    };
-
-    let (_count, _set_count) = create_signal(0);
-
-    let _greet_msg_display = move || greet_msg.get();
+    let (is_model_inited, set_model_inited) = create_signal(false);
+    // let root = create_node_ref();
+    let (is_app_acted, set_app_acted) = create_signal(false);
 
     let (is_booking_open, set_booking_open) = create_signal(false);
     let (is_face_analysis_open, set_face_analysis_open) = create_signal(false);
-
-    // let on_booking_click = move |_| {
-    //     set_face_analysis_open.set(false);
-    //     set_booking_open.set(!is_booking_open.get());
-    // };
 
     let on_face_analysis_click = move |_| {
         // spawn_local(async move {
         set_booking_open.set(false);
         set_face_analysis_open.set(!is_face_analysis_open.get());
-        // capture_and_predict();
         capture_and_predict();
-        // });
-        //
-        echo("world");
     };
 
     let is_mask_open =
@@ -91,23 +48,6 @@ pub fn App() -> impl IntoView {
     let (is_setting_open, set_setting_open) = create_signal(false);
     let setting_close = move |_| set_setting_open.set(false);
     // let (setting_menu_position, set_setting_menu_position) = create_signal(0.0);
-
-    let _scan_qr_code = move || {
-        spawn_local(async move {
-            set_greet_msg.set("requesting".to_owned());
-            info(to_value("scanning qr code").unwrap()).await;
-            let args = to_value(
-                r#"{
-                cameraDirection: "front",
-                windowed: false
-            }"#,
-            )
-            .unwrap();
-            set_greet_msg.set(args.as_string().unwrap());
-            let result = scan(args).await;
-            set_greet_msg.set(result.as_string().unwrap());
-        });
-    };
 
     let on_result_updated = move |result: Event| {
         set_face_analysis_open.set(true);
@@ -122,14 +62,37 @@ pub fn App() -> impl IntoView {
         logging::log!("result updated: {}", value);
     };
 
-    // let detech = create_rw_signal(JsValue::NULL);
-    // create_effect(move |_| {
-    //     spawn_local(async move {
-    //         let detech_inst = attachConsole().await;
-    //         detech.set(detech_inst);
-    //         info(to_value("hwllow").unwrap()).await;
-    //     });
-    // });
+    // let window_inst = use_window();
+
+    // let url_string = get_url_query_map();
+
+    // let dummy_result = ReadSignal::new(get_url_query_map());
+    create_effect(move |_| {
+        let query_map = get_url_query_map();
+        let result = query_map.all("result");
+        if result.is_some() {
+            let result_list = result.unwrap().get(0).unwrap().to_string();
+            match result_list.as_str() {
+                "square" | "oblong" | "round" | "heart" | "rectangular" | "oval" => {
+                    document()
+                        .get_element_by_id("render_result")
+                        .expect("should be rendered")
+                        .dyn_into::<HtmlInputElement>()
+                        .expect("should be input element")
+                        .set_value(&result_list);
+                    set_face_analysis_open.set(true);
+                }
+                _ => {}
+            }
+        };
+    });
+
+    create_effect(move |_| {
+        spawn_local(async move {
+            let _ = init_model().await;
+            set_model_inited.set(true);
+        });
+    });
 
     view! {
        <Meta name="charset" content="UTF-8"/>
@@ -140,7 +103,8 @@ pub fn App() -> impl IntoView {
        <Title text="Leptonic Tauri template"/>
 
        <Root default_theme=LeptonicTheme::default()>
-       <Screen is_mask_open  style="display:flex; flex-direction: row; justify-content: flex-start; align-items: flex-start;">
+
+       <Screen is_mask_open style="display:flex; flex-direction: row; justify-content: flex-start; align-items: flex-start;">
             <FaceAnalysisDrawer is_face_analysis_open on_close=move|_| set_face_analysis_open.set(false)  />
             <Drawer
                 side=DrawerSide::Left
@@ -149,21 +113,34 @@ pub fn App() -> impl IntoView {
             >
                 Booking
             </Drawer>
-            <Box class="view" style="width: 100%; transition: all 0.2s ease-in-out;">
+
+            <Show when= move || !is_app_acted.get()>
+                <MainCoverView></MainCoverView>
+            </Show>
+            // <Show when= move || is_app_acted.get()>
+            <Box class="view" style=move||{
+                if is_app_acted.get(){
+                    "width: 100%; transition: all 0.2s ease-in-out;"
+                }
+                else{
+                    "width: 100%; transition: all 0.2s ease-in-out; display:none;"
+                }
+            }>
                 <CameraCanvas on_result_updated=on_result_updated />
             </Box>
-            <div id="logs"></div>
+            // </Show>
         </Screen>
         <BookmarkDialog is_open=is_bookmark_open on_close=bookmark_close />
         <SettingMenu is_open=is_setting_open on_close=setting_close />
         <NavigationBar
             on_goto_main_page_click = move |_| {
+                set_app_acted.set(true);
                 set_booking_open.set(false);
                 set_face_analysis_open.set(false);
                 capture_and_predict();
-                // set_face_analysis_open.set(true);
             }
             on_upload_click= move |_| {
+                set_app_acted.set(false);
                 set_booking_open.set(false);
                 set_face_analysis_open.set(false);
                 on_trigger_upload();
@@ -173,6 +150,7 @@ pub fn App() -> impl IntoView {
             on_face_analysis_click=on_face_analysis_click
             is_bookmark_open
             on_bookmark_click=move |_| {
+                // set_app_acted.set(true);
                 set_setting_open.set(false);
                 set_bookmark_open.set(!is_bookmark_open.get());
             }

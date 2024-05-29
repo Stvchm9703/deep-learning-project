@@ -1,5 +1,6 @@
 pub mod bookmark_dialog;
 pub mod card;
+pub mod cover_view;
 pub mod face_analysis_drawer;
 pub mod icon;
 pub mod navigation_bar;

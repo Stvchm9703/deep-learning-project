@@ -16061,7 +16061,7 @@ var captureImage = function() {
   return image_data;
 };
 async function loadImageAndConvertToImageData(filePath) {
-  const width = 416, height = 416;
+  const width = 256, height = 256;
   var imageData = await Jimp.read(filePath).then((imageBuffer) => {
     return imageBuffer.scaleToFit(width, height, Jimp.HORIZONTAL_ALIGN_CENTER | Jimp.VERTICAL_ALIGN_MIDDLE);
   });
@@ -16093,7 +16093,7 @@ var preprocessImage = function(imageData) {
     input[i * 3 + 1] = data[i * 4 + 1] / 255;
     input[i * 3 + 2] = data[i * 4 + 2] / 255;
   }
-  const tensor = new Me("float32", input, [1, 3, width, height]);
+  const tensor = new Me("float32", input, [1, width, height, 3]);
   return tensor;
 };
 var imageDataToTensor = function(image, dims) {
@@ -16116,11 +16116,12 @@ var imageDataToTensor = function(image, dims) {
 async function captureAndPredict() {
   const resultElm = document.getElementById("render_result");
   let image_data = captureImage();
-  image_data = resizeImageData(image_data, 416, 416);
+  image_data = resizeImageData(image_data, 256, 256);
   let input_tensor = preprocessImage(image_data);
-  console.log(window["__WEB_CAMERA_MODEL_SESSION__"]);
-  let { labels } = await predict(window["__WEB_CAMERA_MODEL_SESSION__"], input_tensor);
-  let cat_index = Number(labels.data.at(0));
+  const { predictions } = await predict(window["__WEB_CAMERA_MODEL_SESSION__"], input_tensor);
+  console.log(predictions);
+  let { data } = predictions;
+  let cat_index = data.findIndex((v) => v === Math.max(...data));
   console.log(cat_index);
   let output_label = PREDICTION_CATEGORIES[cat_index];
   resultElm.value = output_label.name;
@@ -16136,17 +16137,10 @@ async function testLoadLinkAndPredict() {
   ];
   file_list.forEach(async (file) => {
     let image_data = await loadImageAndConvertToImageData(file);
-    let input_tensor = imageDataToTensor(image_data, [1, 3, 416, 416]);
+    let input_tensor = imageDataToTensor(image_data, [1, 256, 256, 3]);
     let prediction = await predict(window["__WEB_CAMERA_MODEL_SESSION__"], input_tensor);
   });
   return [];
-}
-function echo() {
-  console.log("echo");
-  return "echo";
-}
-function onTriggerUpload() {
-  document.getElementById("render_view_input")?.click();
 }
 window["__WEB_CAMERA_MODEL_SESSION__"] = null;
 Z.wasm.wasmPaths = "/public/ort-dist/";
@@ -16184,24 +16178,20 @@ var initVideoProcess = async () => {
     updloadInputElm.addEventListener("change", async (e) => {
       const file = e?.target.files[0];
       const image = await loadImageAndConvertToImageData(URL.createObjectURL(file));
-      const imageData = resizeImageData(image, 416, 416);
+      const imageData = resizeImageData(image, 256, 256);
       const tensor = preprocessImage(imageData);
-      const { labels } = await predict(window["__WEB_CAMERA_MODEL_SESSION__"], tensor);
-      let cat_index = Number(labels.data.at(0));
+      const { predictions } = await predict(window["__WEB_CAMERA_MODEL_SESSION__"], tensor);
+      console.log(predictions);
+      let { data } = predictions;
+      let cat_index = data.findIndex((v) => v === Math.max(...data));
       console.log(cat_index);
       let output_label = PREDICTION_CATEGORIES[cat_index];
       resultElm.value = output_label.name;
       resultElm?.dispatchEvent(new Event("change"));
     });
   }
-  resultElm.addEventListener("input", () => {
-    console.log("result input event, cap in js");
-  });
-  resultElm.addEventListener("change", () => {
-    console.log("result change event, cap in js");
-  });
 };
-var initModel = async () => await Pd.create("./public/end2end_b1_dyn.onnx");
+var initModel = async () => await Pd.create("./public/model_impl_sz256.onnx");
 var predict = async (session, input_tensor) => {
   const inputName = session.inputNames[0];
   const outputName = session.outputNames[0];
@@ -16212,10 +16202,8 @@ var predict = async (session, input_tensor) => {
 };
 export {
   testLoadLinkAndPredict,
-  onTriggerUpload,
   initVideoProcess,
   initModel,
-  echo,
   captureAndPredict,
   PREDICTION_CATEGORIES
 };
